@@ -2,6 +2,13 @@
 
 return [
 
+    // "root" => env("" ,  __DIR__ );
+
+    /** JWT Key */
+    "jwt_key" => env("JWT_SECRET") ,
+
+    /** Salt Key  */
+    "salt" => env("APP_SALT") ,
     /*
     |--------------------------------------------------------------------------
     | Application Name
@@ -67,11 +74,11 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Taipei',
 
     /*
     |--------------------------------------------------------------------------
-    | Application Locale Configuration
+    | Application Locale Configuration 設定本地語系 resources/lang
     |--------------------------------------------------------------------------
     |
     | The application locale determines the default locale that will be used
@@ -80,7 +87,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => env( 'APP_LOCALE' , "en" ),
 
     /*
     |--------------------------------------------------------------------------
@@ -136,6 +143,9 @@ return [
 
     'providers' => [
 
+        /** plugins */
+        Mews\Captcha\CaptchaServiceProvider::class,
+        
         /*
          * Laravel Framework Service Providers...
          */
@@ -189,7 +199,7 @@ return [
     */
 
     'aliases' => [
-
+        'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
         'Artisan' => Illuminate\Support\Facades\Artisan::class,

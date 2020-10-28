@@ -2,6 +2,20 @@
 
 return [
 
+    /**
+     * 寄件者資訊
+     */
+
+
+    "sender" => [
+        'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+        'port' => env('MAIL_PORT', 587),
+        'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+        'mail' => env('MAIL_USERNAME'),
+        'password' => env('MAIL_PASSWORD'),
+        'name' => env('MAIL_FROM_NAME')
+    ] ,
+
     /*
     |--------------------------------------------------------------------------
     | Default Mailer
