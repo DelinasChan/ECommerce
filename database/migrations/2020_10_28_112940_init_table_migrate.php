@@ -37,8 +37,9 @@ class InitTableMigrate extends Migration
 
         /** 訂單(可以為登入時購買) */
         Schema::create('order', function (Blueprint $table) {
-            $table->string("id"); //訂單編號 十二位中英文流水號
-            $table->string("memberId")->index()->nullable(false) ; //會員Id
+            $table->unsignedInteger("id")->primary(); ; //訂單編號 十二位中英文流水號
+            $table->unsignedInteger('memberId');
+            $table->foreign("memberId")->references("id")->on('member')    ; //訂單編號
             // WAIT(尚未付款) SUCCESS(付款成功) FAILED(付款失敗)
             $table->enum( "payStatus" , ["WAIT","SUCCESS","FAILED"])->default("WAIT") ;
             $table->integer("amount") ; //總金額
@@ -48,11 +49,17 @@ class InitTableMigrate extends Migration
         /** 訂單列表 */
         Schema::create('orderItem', function (Blueprint $table) {
             $table->increments("id");
-            $table->string("orderId")->index()->nullable(false)   ; //訂單編號
-            $table->string("productId")->index()->nullable(false) ; //該訂單對應產品
+            $table->unsignedInteger("orderId")   ;
+            $table->unsignedInteger("productId") ;
             $table->integer("price") ; //購買時單價
             $table->integer("quant") ; //購買時數量
             $table->timestamps();
+
+            /** 設定外來建 */
+            $table->foreign("orderId")->references("id")->on('order')    ; //訂單編號
+            $table->foreign("productId")->references("id")->on('product'); //該訂單對應產品
+
+
         });
         
     }
