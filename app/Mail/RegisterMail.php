@@ -10,7 +10,7 @@ use Illuminate\Queue\SerializesModels;
 class RegisterMail extends Mailable
 {
     use Queueable, SerializesModels;
-    public $data ;
+    protected  $data ;
 
     /**
      * Create a new message instance.
@@ -21,6 +21,7 @@ class RegisterMail extends Mailable
     {
         //
         $this->data = $data ;
+
     }
 
     /**
@@ -31,6 +32,8 @@ class RegisterMail extends Mailable
     public function build()
     {   
         $sender = config("mail.sender") ;
-        return $this->from( $sender["mail"] , $sender["name"] )->view('emails.register');
+        return $this->from( $sender["mail"] , $sender["name"] )
+                    ->view('emails.register')
+                    ->with( $this->data );
     }
 }

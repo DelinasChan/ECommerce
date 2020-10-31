@@ -5,13 +5,10 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request ;
 use App\Models\MemberModel  ;
 use App\Mail\RegisterMail;
+use App\Library\Crypto ;
 
 use Validator ;
 use Mail ;
-
-class User {
-    public $name = "Job" ;
-}
 
 class MemberController extends Controller
 {
@@ -44,14 +41,51 @@ class MemberController extends Controller
             ] , 400 ) ;
         };
 
+        /** 產生JWT token 做 信箱認證 10分鐘 600 */
+        $mailData = [ 'mail_token' =>  Crypto::JwtEncode( [] , 600  ) ] ;
+        $insertData = $request->all() ;
+        $recipient = $request->input("email")   ;
+        $password = $request->input("password") ;
+        $insertData["password"] = Crypto::hash( $password );
+        $insertData["mail_token"] = $mailData["mail_token"] ; //會員變更資料 驗證信箱 token
+
+        /** 新增會員 */
+        $NewMember = MemberModel::create($insertData);
+        /** 根據新建會員Id 寄信 */
+        $mailData["memberId"]   = $NewMember->id ; 
+        $mailData["host"] = $request->getHttpHost();
+
         //寄信
-        $recipient = $request->input("email") ;
-        Mail::to( $recipient )->queue(new RegisterMail( [] )) ;
-        MemberModel::create($request->all());
-        return response()->json([
-            "expected" => "" ,
-            "data" => MemberModel::all()
-        ]);
+        Mail::to( $recipient )->queue(new RegisterMail( $mailData )) ;
+        return response()->json([ "host" => $request->getHttpHost()  , "data" => $data ]);
 
     }
+
+    /** 信箱認證 */
+    public function verifyMail( Request $request ){ 
+        
+        $jwtToken = $request->query("token") ;
+        $memberId = $request->memberId  ;
+        $data = Crypto::JwtDecode( $jwtToken ) ; //驗證Token 失敗代表逾期
+
+        if( isset($data["error"]) && false ){
+            // Token過期 刪除相關資料 重新註冊
+            MemberModel::destroy($memberId);
+            return [ "error" => "申請 已逾期 請重新註冊帳號" ] ;
+        };
+
+        $member = (new MemberModel())->where( ["mail_token" => $jwtToken , "id" => $memberId ] )->first();
+        //查無此資料 刪除所有資料 重新註冊
+        if( ! isset( $member ) && false ){
+            MemberModel::destroy($memberId);
+            return [ "error" => "申請異常 請重新申請 " ] ;
+        };
+
+        //信箱驗證成功 更新 mail_token = SUCCESS
+        $member->mail_token = 'SUCCESS';
+        $member->save();
+        return "申請成功" ;
+        
+    }
+
 }

@@ -4,6 +4,13 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Ahc\Jwt\JWT;
+use Carbon\Carbon ;
+
+use App\Library\Crypto ;
+
+use App\Http\Controllers\MemberController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -17,16 +24,23 @@ use Illuminate\Support\Facades\Mail;
 */
 
 Route::get('/', function () {
-    return config("mail.sender") ;
+    return Crypto::hash( "123456"  );
 });
 
+Route::get("encode" , function(Request $request){
+    $payload = [ "name" => "Job" , "action" => "register" ];
+    return [ "token" => Crypto::JwtEncode( [] , 30 ) ];
+});
+
+Route::get("decode" , function(Request $request){
+    $token =  $request->query("token") ;
+    return Crypto::JwtDecode( $token ) ;
+});
 
 Route::group(["prefix" => "member"] , function( ){
 
     /** 根據查詢字串 驗證信箱 */
-    Route::get("verifyMail/{memberId}" , function( Request $request , $memberId ){ 
-        return "信箱認證 Code: " . $request->query("verifycode") ; ;
-    });
+    Route::get("verifyMail/{memberId}" , [ MemberController::class , "verifyMail" ] );
 
 });
 
