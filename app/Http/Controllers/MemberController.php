@@ -68,19 +68,19 @@ class MemberController extends Controller
         $memberId = $request->memberId  ;
         $data = Crypto::JwtDecode( $jwtToken ) ; //驗證Token 失敗代表逾期
 
-        if( isset($data["error"]) && false ){
+        if( isset($data["error"]) ){
             // Token過期 刪除相關資料 重新註冊
             MemberModel::destroy($memberId);
             return [ "error" => "申請 已逾期 請重新註冊帳號" ] ;
         };
 
-        $member = (new MemberModel())->where( ["mail_token" => $jwtToken , "id" => $memberId ] )->first();
+        $member = (new MemberModel())->where( ["id" => $memberId ] )->whereIn("mail_token", [$jwtToken,"SUCCESS"] )>first();
         //查無此資料 刪除所有資料 重新註冊
-        if( ! isset( $member ) && false ){
+        if( ! isset( $member ) ){
             MemberModel::destroy($memberId);
             return [ "error" => "申請異常 請重新申請 " ] ;
         };
-
+        
         //信箱驗證成功 更新 mail_token = SUCCESS
         $member->mail_token = 'SUCCESS';
         $member->save();
