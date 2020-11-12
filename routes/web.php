@@ -4,28 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Ahc\Jwt\JWT;
-use Carbon\Carbon ;
 
 use App\Library\Crypto ;
 
-use App\Http\Controllers\MemberController;
+use App\Http\Controllers\ECPayController ;
+use App\Http\Controllers\MemberController ;
 
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-Route::get('/', function () {
-    return Crypto::hash( "123456"  );
-});
 
 Route::get("encode" , function(Request $request){
     $payload = [ "name" => "Job" , "action" => "register" ];
@@ -35,6 +19,15 @@ Route::get("encode" , function(Request $request){
 Route::get("decode" , function(Request $request){
     $token =  $request->query("token") ;
     return Crypto::JwtDecode( $token ) ;
+});
+
+/** 綠界相關路由 */
+Route::get("/pay" , [ ECPayController::class , "test" ] );
+Route::group(["prefix" => "ecpay"] , function( ){
+
+    /** 客戶端重導向結果頁面 */
+    Route::post("resultPage" , [ ECPayController::class , "clientResult" ] );
+
 });
 
 Route::group(["prefix" => "member"] , function( ){

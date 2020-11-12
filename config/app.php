@@ -2,6 +2,8 @@
 
 return [
 
+    // "root" => env("" ,  __DIR__ );
+
     /** JWT Key */
     "jwt_key" => env("JWT_SECRET") ,
 
@@ -72,7 +74,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Taipei',
 
     /*
     |--------------------------------------------------------------------------
