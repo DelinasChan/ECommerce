@@ -145,7 +145,8 @@ return [
 
         /** plugins */
         Mews\Captcha\CaptchaServiceProvider::class,
-        
+        Aws\Laravel\AwsServiceProvider::class,
+
         /*
          * Laravel Framework Service Providers...
          */
@@ -199,6 +200,7 @@ return [
     */
 
     'aliases' => [
+        'AWS' => Aws\Laravel\AwsFacade::class,
         'Captcha' => Mews\Captcha\Facades\Captcha::class,
         'App' => Illuminate\Support\Facades\App::class,
         'Arr' => Illuminate\Support\Arr::class,
