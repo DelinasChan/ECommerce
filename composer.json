@@ -23,7 +23,8 @@
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.0",
         "mews/captcha": "^3.2",
-        "nesbot/carbon": "^2.41"
+        "nesbot/carbon": "^2.41" ,
+        "aws/aws-sdk-php-laravel": "~3.0"
     },
     "require-dev": {
         "facade/ignition": "^2.3.6",
