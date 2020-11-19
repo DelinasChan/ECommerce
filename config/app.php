@@ -74,7 +74,7 @@ return [
     |
     */
 
-    'timezone' => 'Asia/Taipei',
+    'timezone' => env("APP_TIMEZONE" , "Asia/Taipei" ),
 
     /*
     |--------------------------------------------------------------------------
