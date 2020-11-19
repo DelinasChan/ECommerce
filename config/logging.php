@@ -35,9 +35,18 @@ return [
     */
 
     'channels' => [
+
+        'stdout' => [
+            'driver' => 'monolog',
+            'handler' => StreamHandler::class,
+            'with' => [
+                'stream' => 'php://stdout',
+            ],
+        ],
+
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['single' , "stdout"],
             'ignore_exceptions' => false,
         ],
 
