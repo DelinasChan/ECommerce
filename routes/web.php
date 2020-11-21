@@ -13,41 +13,16 @@ use App\Http\Controllers\CartController ;
 use App\Http\Controllers\DashboardController ;
 
 
+Route::get("/" , function(){
 
-use Aws\S3\S3Client ;
-
-
-Route::get("/aws" , function( Request $request ){
-
-    $credentials =  config("aws.credentials")  ;
-    $s3 = new S3Client([
-        "version" => config("aws.version"),
-        'region'  => config("aws.region"),
-        'scheme'  => 'http'    
-    ]);
-
-    $res = $s3->putObject([
-        'Bucket' => config("aws.bucket"),
-        'Key'    => 'image/abc.txt',
-        'Body'   => '文字內容'
-    ]);
-
-    dd( $s3 );
-
-});
-
-Route::post("/upload" , function( Request $request ){
-    $s3 = AWS::createClient('s3');
-    $iterator = $s3->getIterator('ListObjects', array(
-        'Bucket' => "image"
-    ));
+    $url = "http://eshopbulk.s3.ap-northeast-1.amazonaws.com/media/member_1/1605964320-close-up-of-squirrel-on-field-314865.jpg" ;
+    $arr =  explode(  "/" , $url  ) ;
+    dd( $arr[count(  explode(  "/" , $url  )) - 1  ]);
 });
 
 Route::group( ["prefix" => "dashboard"] , function(){
 
-    Route::get("/" ,  function(){
-        return "後台" ;
-    });
+    Route::get("/" ,  function(){ return "後台" ; });
 
     Route::group([ "prefix" => "product" ] , function(){
 
@@ -81,6 +56,27 @@ Route::group(["prefix" => "member"] , function( ){
 });
 
 /** ajax api Route */
+Route::group( [ "prefix" => "api" ] , function(){
+
+    Route::post("s3/upload" , function( Request $request ){
+         
+        if( $request->hasFile('image') )
+        {
+            $file =$request->file('image');
+            try{
+                $result = AWSClient::uploadS3( $file , "media/member_1/" )->saveToDB() ;
+                return response()->json([  "status" => true , "result" => $result ]);    
+            }catch( S3Exception $e ){
+                return response()->json([  "status" => false , "message" => $e ]);
+            }
+        }else{
+            return response()->json([  "status" => false , "message" => "file is empty" ]);
+        }
+  
+    });
+
+});
+
 
 /** 測試路由 */
 Route::group(["prefix" => "test"] , function( ){

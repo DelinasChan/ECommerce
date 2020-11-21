@@ -21,7 +21,6 @@
     display: block ;
 }
 
-
 #darkBox > .render{
     z-index: 100000 ; position: fixed ;
     border-radius: 10px ; max-width: 1350px ;
@@ -30,6 +29,37 @@
     background-color: rgb( 193 , 193 , 193 , .95 ) ;
     transform: translate( -50% , -50% );
 }
+
+#darkBox > .render .content{
+    display:flex ;
+    height: 100%;
+    max-height: 670px ;
+}
+
+#darkBox > .render .left{
+    flex-basis: 70%  ;
+    overflow: scroll ;
+    overflow-x: hidden ;
+    display: flex   ;
+    justify-content: flex-start ;
+    flex-wrap: wrap  ;
+    align-self: auto ;
+    padding: 15px 0px ;
+}
+
+#darkBox .images > div.picture{
+    flex-basis: calc( 100% / 5.8 );
+    margin:5px ;
+}
+
+#darkBox > .render .right{
+    flex-basis: 25%;
+}
+
+#darkBox > .render .left::-webkit-scrollbar {
+    display: none ;
+}
+
 
 .render > div.title{
     background-color: rgba( 93 , 173 , 255 , .7 ) ;

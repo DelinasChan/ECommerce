@@ -20,8 +20,7 @@
 
 </head>
 <body>
-    <div class="dashboard">
-        
+    <div  class="dashboard">
         <!-- SideBar Start -->
             <div class="sideBar">
                 <ul>
@@ -45,41 +44,9 @@
         <!-- Content End   -->
 
         <!-- 媒體庫 MediaLib Start -->
-            <div id="darkBox" class="media-library" show="true" >
-                <div class="render">
-                    <div class="title">
-                        <a>媒體庫</a>
-                    </div>
-                    <div class="content">
-                        <div class="left">
-                            <!-- 圖片列表 -->
-                        </div>
-                        <div class="right">
-                            <div 
-                                class="edit-block"
-                                action="alt"    
-                            >
-                                <label>
-                                    <a>替代文字：</a>
-                                    <input type="" />
-                                </label>
-                            </div>
-                            <div class="edit-block">
-                                <label>
-                                    <a>替代文字：</a>
-                                    <input type="" />
-                                </label>
-                            </div>
-                            <div class="edit-block">
-                                <label>
-                                    <a>替代文字：</a>
-                                    <input type="" />
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div id="darkBox" class="media-library" show="true" >
+            <media-library></media-library>
+        </div>
         <!-- MediaLib End -->
         
         <script>
@@ -88,6 +55,8 @@
             //    $(this).attr( "show" , !show ) ;
             });
         </script>
+
+        <script src="{{ mix('js/app.js') }}"></script>
 
     </div>
 </body>
