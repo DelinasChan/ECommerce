@@ -1,0 +1,162 @@
+*{
+    padding: 0 ;
+    margin : 0 ;
+    outline: none ;
+}
+
+/** 媒體庫 CSS */
+#darkBox{
+    background:rgba( 16 , 16 , 16 , 0.85) ;
+    z-index: 99999;
+    position:absolute ;
+    display: flex ;
+    justify-content: center ;
+    display:none ;
+    left:0 ; top:0 ;
+    height: 100% ;
+    width:100% 
+}
+
+#darkBox[show=true]{
+    display: block ;
+}
+
+
+#darkBox > .render{
+    z-index: 100000 ; position: fixed ;
+    border-radius: 10px ; max-width: 1350px ;
+    width: 85% ; height: 80% ;
+    left: 50% ; top:50% ;
+    background-color: rgb( 193 , 193 , 193 , .95 ) ;
+    transform: translate( -50% , -50% );
+}
+
+.render > div.title{
+    background-color: rgba( 93 , 173 , 255 , .7 ) ;
+    border-bottom: 1px solid black ;
+    padding: 0 0 0 25px ;
+    border-top-right-radius: 10px ;
+    border-top-left-radius: 10px ;
+}
+
+.render > div.title > a{
+    font-size: 32px     ; line-height: 2.5 ;
+    letter-spacing: 2px ; color:black    ;
+    font-family: Microsoft JhengHei ;
+}
+
+
+/** 後台 CSS */
+.dashboard a:hover{
+    text-decoration: none ;
+}
+
+.dashboard{
+    background:rgba( 224 , 230 , 236 , .52 ) ;
+    position:  relative ; padding: 0 0 0 300px ;
+    min-height: 100vh ;
+}
+
+.dashboard > .sideBar {
+    width:  250px ; height: 100vh ;
+    max-height: 100vh ; position: fixed ;
+    left: 0 ; top:0 ; background:#2d3b4a ;
+}
+
+.dashboard > .content , #productFrom {
+    padding: 80px 0 0 50px ; 
+    display: flex ;
+    justify-content: flex-start ;
+    flex-direction: column ;
+}
+
+.dashboard > .content > div , div.edit {
+    margin: 40px auto ; width:95% ;
+}
+
+div.edit > input[type=text]{
+    width: 100%     ; border: none      ;
+    line-height: 2  ; font-size: 18px   ;
+    color: black  ; max-height: 380px ;
+    padding: 0 15px ;
+}
+
+div.note-editable{
+    background: white ;
+    height: 50vh !important ;
+}
+
+div.edit.detial{
+    background:#fff ;
+}
+
+div.edit.detial .section-list{
+    background-color: #2d3b4a ;
+}
+
+div.edit.detial .section-list a {
+    display: inline-block ;
+    padding: 0 15px ; font-size: 15px     ;
+    line-height: 2.5  ; letter-spacing: 2px ; 
+    color: #fff   ; cursor: pointer     ;
+}
+
+div.edit.detial .section-list a:hover{
+    background-color: rgba(0,0,0,.8);
+}
+
+.section-item{ 
+  padding: 10px ;
+}
+
+.section-item section{
+    display: none ; min-height: 160px ;
+}
+
+section.selected{
+    display: flex ; justify-content: space-around ;
+    flex-direction: column ;
+}
+
+section.selected input{
+    padding: 5px ; border: none ;
+    border-bottom: 1px solid black ;
+    font-size: 15px ;
+}
+
+section.selected#gallery{
+    display: flex ;
+    justify-content: flex-start ;
+    flex-direction: row ;
+}
+
+.picture{
+    flex-basis: 150px ; display: flex ;
+    flex-direction: column  ;
+    justify-content: center ;
+    position: relative ;
+    cursor: pointer    ;
+}
+
+.picture.no-image{
+    border: 1px solid black ;
+}
+
+.picture.no-image img{
+    display: none ;
+}
+
+.picture.no-image::before{
+  content: "新增圖片" ;
+  color: black ;
+  font-size: 15px ;
+  position: absolute ;
+  left:50% ; top:50% ;
+  transform: translate(-50%,-50%);
+  pointer-events: none ;
+  letter-spacing: 2px ;
+}
+
+.edit-block{
+    margin: 5px 0 ;
+}
