@@ -10,29 +10,60 @@ use App\Library\Crypto ;
 use App\Http\Controllers\ECPayController ;
 use App\Http\Controllers\MemberController ;
 use App\Http\Controllers\CartController ;
+use App\Http\Controllers\DashboardController ;
 
-Route::get("encode" , function(Request $request){
-    $payload = [ "name" => "Job" , "action" => "register" ];
-    return [ "token" => Crypto::JwtEncode( [] , 30 ) ];
+
+
+use Aws\S3\S3Client ;
+
+
+Route::get("/aws" , function( Request $request ){
+
+    $credentials =  config("aws.credentials")  ;
+    $s3 = new S3Client([
+        "version" => config("aws.version"),
+        'region'  => config("aws.region"),
+        'scheme'  => 'http'    
+    ]);
+
+    $res = $s3->putObject([
+        'Bucket' => config("aws.bucket"),
+        'Key'    => 'image/abc.txt',
+        'Body'   => '文字內容'
+    ]);
+
+    dd( $s3 );
+
 });
 
-Route::get("decode" , function(Request $request){
-    $token =  $request->query("token") ;
-    return Crypto::JwtDecode( $token ) ;
+Route::post("/upload" , function( Request $request ){
+    $s3 = AWS::createClient('s3');
+    $iterator = $s3->getIterator('ListObjects', array(
+        'Bucket' => "image"
+    ));
 });
 
-/**
- * 購物車資料存在 window.localStorage
-*/
+Route::group( ["prefix" => "dashboard"] , function(){
+
+    Route::get("/" ,  function(){
+        return "後台" ;
+    });
+
+    Route::group([ "prefix" => "product" ] , function(){
+
+        /** 列表產品 */
+        Route::get( "/" , [ DashboardController::class , "products" ] ) ;
+        Route::get( "edit/{productId}"   ,  [ DashboardController::class , "product" ] ) ;
+        Route::get( "create"   ,  [ DashboardController::class , "product" ] )    ;
+        Route::post( "save"   ,  [ DashboardController::class , "saveProduct" ] ) ;
+        
+    });
+
+});
+
+/** 購物車資料存在 window.localStorage */
 Route::get("/shop/cart" , [ ECPayController::class , "test" ] );
 
-Route::get("session/destroy" , function(){
-    Session::flush();
-});
-
-/** 購物相關路由 */
-Route::group(["prefix" => "shop"] , function(){
-});
 
 /** 綠界金流相關路由 */
 Route::group(["prefix" => "ecpay"] , function(){
@@ -50,21 +81,6 @@ Route::group(["prefix" => "member"] , function( ){
 });
 
 /** ajax api Route */
-Route::group( ["prefix"=>"api" , 'middleware' => ['api'] ] , function(){
-
-    Route::get("/", function(){ return "ABC" ; });
-
-    /** 前台購物車 api */
-    Route::group( ["prefix"=>"cart"] , function() {
-
-        /** 新增商品到購物車 */
-        Route::post( "addItem"   , [ CartController::class , "modifyItem" ] );
-        Route::get( "addItem"   , [ CartController::class , "modifyItem" ] );
-
-
-    });
-
-});
 
 /** 測試路由 */
 Route::group(["prefix" => "test"] , function( ){
@@ -75,6 +91,5 @@ Route::group(["prefix" => "test"] , function( ){
 
     /** 會員註冊 送出信箱 */
     Route::post( "register" , [ MemberController::class , "register" ] );
-    Route::get( "/session" , [ CartController::class , "sessionTest" ]);
 
 });
