@@ -5,7 +5,8 @@
  
  <h2>第三方套件</h2>
  <ul>
-   <li> JWT 用來處理註冊信箱認證 </li>
-   <li> 綠界 AIO SDK 完整金流流程 </li>
-   <li> Laravel Social Plugin 實作臉書第三方登入 </li>
+   <li> JWT – 用來處理註冊信箱認證 </li>
+   <li> 綠界 SDK – 處理金流 </li>
+   <li> Laravel Social Plugin–實作臉書第三方登入 </li>
+   <li>AWS SDK – 將檔案上傳到 S3 雲端空間 </li>
  </ul>
