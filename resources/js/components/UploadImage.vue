@@ -1,9 +1,9 @@
 <template>
     <div 
-        class="upload" :percent="percent"
-        style="width:220px ; height:150;"
+        class="upload"
+        style="border:1px solid black ;"
     >
-        {{ percent }}%
+        {{ percentCompleted }}%
     </div>
 </template>
 
@@ -12,8 +12,7 @@
 import axios from "axios" ;
 
 export default {
-    name: 'UploadImage',
-    props: ['image'],
+    name: 'UploadImage' , props: [ 'image' , "index" ],
     mounted(){
 
         let form = new FormData();
@@ -24,18 +23,21 @@ export default {
             url: 'http://localhost:8000/api/s3/upload',
             headers: {
                 'accept': 'application/json',
-                'Content-Type': `multipart/form-data; boundary=${form._boundary}`,
+                'Content-Type': `multipart/form-data;`,
+            },
+            onUploadProgress:( progressEvent ) => {
+                this.percentCompleted = Math.floor((progressEvent.loaded * 100) / progressEvent.total) ;
             }
-        }).then(( response ) => { console.log( response ); });
-
+        }).then(( response ) => { 
+                let { result:image } = response.data ;
+                if( image ){
+                    let paramter = { index:this.index , image }
+                    this.$emit( "changeCollection" , paramter );
+                }
+            });
     },
     data(){
-        return {
-            percent:0
-        }
-    },
-    methods:{
-
+        return {  percentCompleted:0 }
     }
 }
 </script>

@@ -13,34 +13,49 @@
                     v-for="( image , index ) in images" 
                     class="picture" :key="index" 
                 > 
-                    <UploadImage v-if="!image.id" :image='image' />
-                    <img 
-                        :src="image.src" :img="image.id"
-                        width="220" height="150"
+                    <UploadImage 
+                        v-if="!image.id" :image='image' :index='index'
+                        @changeCollection="changeCollection"
+
+                    />
+                    <img v-else  
+                        :src="image.src" :img="image.id" 
+                        @click="selectImg = JSON.parse( JSON.stringify( image ) ) "
                     />
                 </div>
             </div>
             <!--圖片編輯區塊-->
             <div class="right">
-                <div v-if=" image.id " class="edit-context">
+                <div v-if=" selectImg.id " class="edit-context">
                     <!--- img.alt -->
-                    <div class="edit-block">
-                        <a>替代文字: </a>
-                        <input type="text" v-model="image.alt">
+                    <div >
+                        <a>替代文字</a>
+                        <input 
+                            class="edit-block" type="text" v-model="selectImg.alt"
+                            @keypress="changeImage"
+                            style="border-bottom:1px solid black ;"
+                        >
                     </div>
                     <!--- img.name -->
                     <div>
-                        <a>圖片名稱:</a>
-                        <input type="text" v-model="image.name" readonly >
+                        <a>圖片名稱</a>
+                        <input type="text" v-model="selectImg.name" readonly >
                     </div>
                     <!--- img.src -->
-                    <div>
-                        <a>圖片網址:</a>
+                    <div >
+                        <a>圖片網址</a>
                         <input 
-                            type="text" v-model="image.src" readonly 
-                            @click="copyText"
+                            type="text" v-model="selectImg.src" readonly="true"
+                            @click="copyText"  style="cursor:pointer;"
                         >
                     </div>
+
+                    <div class="selectBtn" >
+                        <a @click="selectImage" > 
+                            插入圖片
+                        </a>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -48,32 +63,31 @@
 </template>
 
 <script>
+import axios from 'axios';
 
 import UploadImage from "./UploadImage" ;
 
 
 export default {
+  data() { return { images:[] , selectImg:{} } },
+  components:{ UploadImage },
   mounted(){
-
-    //   let array = [] ;
-    //   for( let id = 0 ; id < 40 ; id++ )
-    //   { 
-    //       let src ="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg" ;
-    //       let copyPropType = { id , name:`圖片名稱_${ id }` , "alt":"替代文字" , src } ;
-    //       array.push( copyPropType );
-    //   };
-    //   this.images = array ;
-
-  },
-  data() {
-      return {
-        images:[] , image:{}
-      }
-  },
-  components:{    
-    UploadImage
+    /** 組件初始化 跟 伺服器請求該用戶圖片 */
+    axios.get("/api/media")
+        .then(( response ) => { this.images = response.data ; });
   },
   methods:{
+    changeImage:function({keyCode }){
+        /** 輸入 enter 變更 替代文字 */
+        if( keyCode == 13 ){
+            let { id , alt } = this.selectImg ;
+            axios.post("/api/media/update",  { id , alt })
+                .then(( response ) => {
+                    console.log( response );
+                });
+
+        };
+    },
     copyText:function({ target:node }){
         let range = document.createRange();
         range.selectNode( node );
@@ -87,10 +101,10 @@ export default {
         e.preventDefault();
     },
     onDrop:function( e ){
+
         e.stopPropagation() ;
         e.preventDefault()  ;
         let dt = e.dataTransfer ;
-        // console.log( dt.files )
         /** 過濾 JPEG JPG 資料 */
         let filter = new Array( ...dt.files ).filter(( image ) => { 
             return ["image/jpeg","image/jpg"].indexOf( image.type  ) == -1 
@@ -103,7 +117,17 @@ export default {
         
         this.images.unshift( ...dt.files );
     
+    },
+    changeCollection:function( changeData ){
+        let { index , image } = changeData ;
+        let changeArr = JSON.parse( JSON.stringify( this.images ) );
+        changeArr[ index ] = image ;
+        this.images = changeArr ;
+    },
+    selectImage:function(){
+        window.MediaLibrary.insertImage( this.selectImg );
     }
+
   }
 }
 </script>

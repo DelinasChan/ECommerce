@@ -40,31 +40,57 @@
                     </div>
                 </section>
                 <section id="gallery"  >
-                    <div class="picture no-image">
-                        <img height=130 />
+                    <!-- 圖片列表 -->
+
+                    <!-- 新增圖片 -->
+                    <div class="picture no-image openMediaBtn" callBack="galleryAddImage" >
+                        &nbsp;
                     </div>
+                    
                 </section>
             </div>
         </div>
         
         <div >
-
+            <input type="submit" value="提交表單" >
         </div>
 
     </form>
     <!-- ProductFrom End -->
 
     <script>
+
         $(document).ready(function() {
 
             /**  初始化文字編輯器 */
-            $('#summernote').summernote({
-                disableResizeEditor: true ,
-                lang:"zh-TW"
+            let HelloButton = function (context) {
+            let ui = $.summernote.ui;
+            let button = ui.button({
+                    contents: '<i class="fa fa-child openMediaBtn" callBack="editorAddImage" /> Hello',
+                });
+                
+                return button.render(); 
+            };
+
+            $('#summernote').summernote({ 
+                disableResizeEditor: true , lang:"zh-TW" ,
+                toolbar: [
+                    // [groupName, [list of button]]
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough', 'superscript', 'subscript']],
+                    ['fontsize', ['fontsize']],
+                    ['color', ['color']],
+                    ['para', ['ul', 'ol', 'paragraph']],
+                    ['height', ['height']],
+                    ["myBtn" , ["hello"]] 
+                ],
+                buttons: {
+                    hello: HelloButton
+                }
+
             });
 
             $(".section-list > a ").click(function( ){
-                
                 let selectId = $(this).attr("target") ;
                 $(".section-item > section").each(function( index ){
                     if( selectId == $(this).attr("id") ) {
@@ -74,6 +100,16 @@
                     };
                 });
             });
+
+
+            $("#productForm").submit(function( event ){
+                let FormData = $(this).serializeArray() ;
+                event.preventDefault()  ;
+                console.log( FormData ) ;
+                return false ;
+            });
+
         });
+
     </script>
 @stop

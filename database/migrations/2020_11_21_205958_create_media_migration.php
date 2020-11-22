@@ -16,6 +16,7 @@ class CreateMediaMigration extends Migration
         /** 建立多媒體資料 */
         Schema::create('media', function (Blueprint $table) {
             $table->increments("id");
+            $table->integer('memberId'); //會員Id名稱
             $table->string('name'); //圖片名稱
             $table->string('alt')->nullable(true) ; //替代文字
             $table->string('src') ; //圖片網址

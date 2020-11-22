@@ -1908,7 +1908,9 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _UploadImage__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UploadImage */ "./resources/js/components/UploadImage.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _UploadImage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./UploadImage */ "./resources/js/components/UploadImage.vue");
 function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
 
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
@@ -1976,29 +1978,62 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {//   let array = [] ;
-    //   for( let id = 0 ; id < 40 ; id++ )
-    //   { 
-    //       let src ="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg" ;
-    //       let copyPropType = { id , name:`圖片名稱_${ id }` , "alt":"替代文字" , src } ;
-    //       array.push( copyPropType );
-    //   };
-    //   this.images = array ;
-  },
   data: function data() {
     return {
       images: [],
-      image: {}
+      selectImg: {}
     };
   },
   components: {
-    UploadImage: _UploadImage__WEBPACK_IMPORTED_MODULE_0__["default"]
+    UploadImage: _UploadImage__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    /** 組件初始化 跟 伺服器請求該用戶圖片 */
+    axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("/api/media").then(function (response) {
+      _this.images = response.data;
+    });
   },
   methods: {
-    copyText: function copyText(_ref) {
-      var node = _ref.target;
+    changeImage: function changeImage(_ref) {
+      var keyCode = _ref.keyCode;
+
+      /** 輸入 enter 變更 替代文字 */
+      if (keyCode == 13) {
+        var _this$selectImg = this.selectImg,
+            id = _this$selectImg.id,
+            alt = _this$selectImg.alt;
+        axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/media/update", {
+          id: id,
+          alt: alt
+        }).then(function (response) {
+          console.log(response);
+        });
+      }
+
+      ;
+    },
+    copyText: function copyText(_ref2) {
+      var node = _ref2.target;
       var range = document.createRange();
       range.selectNode(node);
       var selection = window.getSelection();
@@ -2015,8 +2050,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
       e.stopPropagation();
       e.preventDefault();
-      var dt = e.dataTransfer; // console.log( dt.files )
-
+      var dt = e.dataTransfer;
       /** 過濾 JPEG JPG 資料 */
 
       var filter = _construct(Array, _toConsumableArray(dt.files)).filter(function (image) {
@@ -2031,6 +2065,16 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
       ;
 
       (_this$images = this.images).unshift.apply(_this$images, _toConsumableArray(dt.files));
+    },
+    changeCollection: function changeCollection(changeData) {
+      var index = changeData.index,
+          image = changeData.image;
+      var changeArr = JSON.parse(JSON.stringify(this.images));
+      changeArr[index] = image;
+      this.images = changeArr;
+    },
+    selectImage: function selectImage() {
+      window.MediaLibrary.insertImage(this.selectImg);
     }
   }
 });
@@ -2060,8 +2104,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'UploadImage',
-  props: ['image'],
+  props: ['image', "index"],
   mounted: function mounted() {
+    var _this = this;
+
     var form = new FormData();
     form.append("image", this.image);
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
@@ -2070,18 +2116,29 @@ __webpack_require__.r(__webpack_exports__);
       url: 'http://localhost:8000/api/s3/upload',
       headers: {
         'accept': 'application/json',
-        'Content-Type': "multipart/form-data; boundary=".concat(form._boundary)
+        'Content-Type': "multipart/form-data;"
+      },
+      onUploadProgress: function onUploadProgress(progressEvent) {
+        _this.percentCompleted = Math.floor(progressEvent.loaded * 100 / progressEvent.total);
       }
     }).then(function (response) {
-      console.log(response);
+      var image = response.data.result;
+
+      if (image) {
+        var paramter = {
+          index: _this.index,
+          image: image
+        };
+
+        _this.$emit("changeCollection", paramter);
+      }
     });
   },
   data: function data() {
     return {
-      percent: 0
+      percentCompleted: 0
     };
-  },
-  methods: {}
+  }
 });
 
 /***/ }),
@@ -19753,17 +19810,18 @@ var render = function() {
               { key: index, staticClass: "picture" },
               [
                 !image.id
-                  ? _c("UploadImage", { attrs: { image: image } })
-                  : _vm._e(),
-                _vm._v(" "),
-                _c("img", {
-                  attrs: {
-                    src: image.src,
-                    img: image.id,
-                    width: "220",
-                    height: "150"
-                  }
-                })
+                  ? _c("UploadImage", {
+                      attrs: { image: image, index: index },
+                      on: { changeCollection: _vm.changeCollection }
+                    })
+                  : _c("img", {
+                      attrs: { src: image.src, img: image.id },
+                      on: {
+                        click: function($event) {
+                          _vm.selectImg = JSON.parse(JSON.stringify(image))
+                        }
+                      }
+                    })
               ],
               1
             )
@@ -19772,82 +19830,94 @@ var render = function() {
         ),
         _vm._v(" "),
         _c("div", { staticClass: "right" }, [
-          _vm.image.id
+          _vm.selectImg.id
             ? _c("div", { staticClass: "edit-context" }, [
-                _c("div", { staticClass: "edit-block" }, [
-                  _c("a", [_vm._v("替代文字: ")]),
+                _c("div", [
+                  _c("a", [_vm._v("替代文字")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.image.alt,
-                        expression: "image.alt"
+                        value: _vm.selectImg.alt,
+                        expression: "selectImg.alt"
                       }
                     ],
+                    staticClass: "edit-block",
+                    staticStyle: { "border-bottom": "1px solid black" },
                     attrs: { type: "text" },
-                    domProps: { value: _vm.image.alt },
+                    domProps: { value: _vm.selectImg.alt },
                     on: {
+                      keypress: _vm.changeImage,
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.image, "alt", $event.target.value)
+                        _vm.$set(_vm.selectImg, "alt", $event.target.value)
                       }
                     }
                   })
                 ]),
                 _vm._v(" "),
                 _c("div", [
-                  _c("a", [_vm._v("圖片名稱:")]),
+                  _c("a", [_vm._v("圖片名稱")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.image.name,
-                        expression: "image.name"
+                        value: _vm.selectImg.name,
+                        expression: "selectImg.name"
                       }
                     ],
                     attrs: { type: "text", readonly: "" },
-                    domProps: { value: _vm.image.name },
+                    domProps: { value: _vm.selectImg.name },
                     on: {
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.image, "name", $event.target.value)
+                        _vm.$set(_vm.selectImg, "name", $event.target.value)
                       }
                     }
                   })
                 ]),
                 _vm._v(" "),
                 _c("div", [
-                  _c("a", [_vm._v("圖片網址:")]),
+                  _c("a", [_vm._v("圖片網址")]),
                   _vm._v(" "),
                   _c("input", {
                     directives: [
                       {
                         name: "model",
                         rawName: "v-model",
-                        value: _vm.image.src,
-                        expression: "image.src"
+                        value: _vm.selectImg.src,
+                        expression: "selectImg.src"
                       }
                     ],
-                    attrs: { type: "text", readonly: "" },
-                    domProps: { value: _vm.image.src },
+                    staticStyle: { cursor: "pointer" },
+                    attrs: { type: "text", readonly: "true" },
+                    domProps: { value: _vm.selectImg.src },
                     on: {
                       click: _vm.copyText,
                       input: function($event) {
                         if ($event.target.composing) {
                           return
                         }
-                        _vm.$set(_vm.image, "src", $event.target.value)
+                        _vm.$set(_vm.selectImg, "src", $event.target.value)
                       }
                     }
                   })
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "selectBtn" }, [
+                  _c("a", { on: { click: _vm.selectImage } }, [
+                    _vm._v(
+                      " \n                        插入圖片\n                    "
+                    )
+                  ])
                 ])
               ])
             : _vm._e()
@@ -19887,12 +19957,8 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    {
-      staticClass: "upload",
-      staticStyle: { width: "220px", height: "150" },
-      attrs: { percent: _vm.percent }
-    },
-    [_vm._v("\n    " + _vm._s(_vm.percent) + "%\n")]
+    { staticClass: "upload", staticStyle: { border: "1px solid black" } },
+    [_vm._v("\n    " + _vm._s(_vm.percentCompleted) + "%\n")]
   )
 }
 var staticRenderFns = []
