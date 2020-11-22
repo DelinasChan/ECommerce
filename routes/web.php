@@ -59,7 +59,6 @@ Route::group(["prefix" => "member"] , function( ){
 Route::group( [ "prefix" => "api" ] , function(){
 
     Route::post("s3/upload" , function( Request $request ){
-         
         if( $request->hasFile('image') )
         {
             $file =$request->file('image');
@@ -72,8 +71,23 @@ Route::group( [ "prefix" => "api" ] , function(){
         }else{
             return response()->json([  "status" => false , "message" => "file is empty" ]);
         }
-  
     });
+
+    Route::get("/media" , [ DashboardController::class ,  "getMedia" ] );
+    Route::post("/media/update" , [ DashboardController::class ,  "updateMedia" ] );
+
+    Route::post("/test" , function( Request $request ){
+        $result = [];
+        foreach( $request->get("image") as $json )
+        {
+           array_push( $result , json_decode( $json ) );
+        };
+        
+        return response()->json( $result );
+        
+    });
+
+
 
 });
 

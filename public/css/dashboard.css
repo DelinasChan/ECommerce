@@ -8,7 +8,7 @@
 #darkBox{
     background:rgba( 16 , 16 , 16 , 0.85) ;
     z-index: 99999;
-    position:absolute ;
+    position:fixed ;
     display: flex ;
     justify-content: center ;
     display:none ;
@@ -24,8 +24,7 @@
 #darkBox > .render{
     z-index: 100000 ; position: fixed ;
     border-radius: 10px ; max-width: 1350px ;
-    width: 85% ; height: 80% ;
-    left: 50% ; top:50% ;
+    width: 85% ; left: 50% ; top:50% ;
     background-color: rgb( 193 , 193 , 193 , .95 ) ;
     transform: translate( -50% , -50% );
 }
@@ -42,18 +41,38 @@
     overflow-x: hidden ;
     display: flex   ;
     justify-content: flex-start ;
-    flex-wrap: wrap  ;
-    align-self: auto ;
-    padding: 15px 0px ;
+    flex-wrap: wrap    ;
+    align-self: center ;
+    padding: 15px 0px  ;
+    max-height: 65vh   ;
 }
 
-#darkBox .images > div.picture{
+#darkBox .images > div{
     flex-basis: calc( 100% / 5.8 );
-    margin:5px ;
+    margin:5px ; height: 200px ;
 }
 
-#darkBox > .render .right{
-    flex-basis: 25%;
+#darkBox .images > div.picture img {
+    width: 100% ; height: 100%;
+}
+
+#darkBox > .render .right { flex-basis: 25% ; align-self: center; }
+
+#darkBox .edit-context , #darkBox .edit-context > div{
+    display: flex ; flex-direction: column ;
+    justify-content: center ;
+}
+
+#darkBox .edit-context > div{ margin:15px auto ; width: 100% ; }
+
+#darkBox .edit-context a{
+    font-size: 18px ;
+}
+
+#darkBox input[type=text]{
+    line-height: 2  ; font-size: 18px ;
+    padding:5px     ; background:transparent ;
+    border: none    ;
 }
 
 #darkBox > .render .left::-webkit-scrollbar {
@@ -111,14 +130,9 @@ div.edit > input[type=text]{
     padding: 0 15px ;
 }
 
-div.note-editable{
-    background: white ;
-    height: 50vh !important ;
-}
+div.note-editable{ background: white ; height: 50vh !important ; }
 
-div.edit.detial{
-    background:#fff ;
-}
+div.edit.detial{ background:#fff ; }
 
 div.edit.detial .section-list{
     background-color: #2d3b4a ;
@@ -126,18 +140,16 @@ div.edit.detial .section-list{
 
 div.edit.detial .section-list a {
     display: inline-block ;
-    padding: 0 15px ; font-size: 15px     ;
-    line-height: 2.5  ; letter-spacing: 2px ; 
-    color: #fff   ; cursor: pointer     ;
+    padding: 0 15px   ; font-size: 15px        ;
+    line-height: 2.5  ; letter-spacing: 2px    ; 
+    color: #fff     ; cursor: pointer        ;
 }
 
 div.edit.detial .section-list a:hover{
     background-color: rgba(0,0,0,.8);
 }
 
-.section-item{ 
-  padding: 10px ;
-}
+.section-item{ padding: 10px ; }
 
 .section-item section{
     display: none ; min-height: 160px ;
@@ -155,36 +167,33 @@ section.selected input{
 }
 
 section.selected#gallery{
-    display: flex ;
+    display: flex ;  flex-direction: row ;
     justify-content: flex-start ;
-    flex-direction: row ;
 }
 
 .picture{
     flex-basis: 150px ; display: flex ;
-    flex-direction: column  ;
-    justify-content: center ;
-    position: relative ;
-    cursor: pointer    ;
+    flex-direction: column  ; justify-content: center ;
+    position: relative ; cursor: pointer    ;
+    margin: 0 5px ;
 }
 
-.picture.no-image{
-    border: 1px solid black ;
-}
-
-.picture.no-image img{
-    display: none ;
-}
+.picture.no-image{ position: relative ; }
 
 .picture.no-image::before{
-  content: "新增圖片" ;
-  color: black ;
-  font-size: 15px ;
-  position: absolute ;
-  left:50% ; top:50% ;
-  transform: translate(-50%,-50%);
-  pointer-events: none ;
-  letter-spacing: 2px ;
+  content: "新增圖片"    ;  color: black ;
+  font-size: 15px       ;  position: absolute ;
+  left:50% ; top:50%    ;  transform: translate(-50%,-50%);
+  pointer-events: none  ;  letter-spacing: 2px ;
+}
+
+.picture.preview{
+    display: flex ;
+}
+
+.picture.preview > img {
+    height:80% ;
+    align-self: center ;
 }
 
 .edit-block{

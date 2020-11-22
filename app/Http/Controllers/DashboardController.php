@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\MediaModel ;
+
 /** 後台控制器 */
 class DashboardController extends Controller
 {
@@ -37,6 +39,22 @@ class DashboardController extends Controller
     public function saveProduct( Request $requrest , $productId )
     {
         return view("dashboard.product")->with(["productId"=> $productId ]);
+    }
+    
+    /** 取得用戶Id 取得媒體庫資料 */
+    public function getMedia()
+    {
+        return MediaModel::where( 'memberId' , '=' , 1 )->get() ;
+    }
+
+    /** 根據圖片資源 */
+    public function updateMedia( Request $request )
+    {
+
+        $id = $request->get("id")   ;
+        $alt = $request->get("alt") ;
+        MediaModel::where( 'id' , '=' , $id  )->update([ "alt" => $alt ]);
+        return response()->json([ "status" => true ]);
     }
 
 }

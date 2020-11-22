@@ -18,6 +18,33 @@
     <script src="{{ URL::asset('/js/summernote/summernote-lite.min.js') }}" ></script>
     <script src="{{ URL::asset('/js/summernote/lang/summernote-zh-TW.min.js') }}" ></script>
 
+    <script>
+        
+        window.DarkBox = {
+            open:() => { $("#darkBox").attr( "show" , "true" ) ;   },
+            close:() => { $("#darkBox").attr( "show" , "false" ) ; }
+        };
+
+        window.MediaLibrary = class MediaLibrary{
+            static callBack = null ;
+
+            /** callBack 設定要操作的 DOM */
+            static setCallBack( callBack ){  
+                this.callBack = callBack ;
+                DarkBox.open();
+            };
+
+            //媒體庫呼叫事件
+            static insertImage( image ){
+                if( typeof this.callBack == "function" ){
+                    this.callBack( image );
+                    this.callBack = null  ;
+                    DarkBox.close();
+                };
+            };
+        };
+
+    </script>
 </head>
 <body>
     <div  class="dashboard">
@@ -44,16 +71,50 @@
         <!-- Content End   -->
 
         <!-- 媒體庫 MediaLib Start -->
-        <div id="darkBox" class="media-library" show="true" >
-            <media-library></media-library>
-        </div>
+            <div id="darkBox" class="media-library" show="false" >
+                <media-library></media-library>
+            </div>
         <!-- MediaLib End -->
         
         <script>
-            $("#darkBox").click(function(){
-               let show =  $(this).attr("show") ;
-            //    $(this).attr( "show" , !show ) ;
+
+            let ImageCallBack = {
+                galleryAddImage:( image )=>{
+                    let value = `src:${image.src}@alt:${image.alt}` ;
+                    let insertHtml = `
+                        <div class='preview picture' >
+                            <input type="hidden" name=preview[] value=${value} />
+                            <img 
+                                src=${ image.src } alt=${ image.alt } 
+                                height=80 width=150    
+                            />
+                        </div>
+                    `;
+                    $( insertHtml ).insertBefore("div.no-image.openMediaBtn");
+                },
+                /** 插入文字編輯器 CallBack */
+                editorAddImage:({ src , alt }) => {
+                    $('#summernote').summernote('insertImage', src, function ($image) {
+                        $image.css('width', $image.width() / 3 );
+                        $image.attr('alt', alt );
+                    });
+                }
+            };
+            
+            $(document).ready(function() {
+
+                $(".openMediaBtn").click(function(){ 
+                    let callBackName = $(this).attr("callBack") ;
+                    MediaLibrary.setCallBack( ImageCallBack[ callBackName ]  );
+                }) ;
+
             });
+
+
+            document.addEventListener("click", function( event ){
+                if( event.target.id == "darkBox" ){ DarkBox.close(); };
+            });
+
         </script>
 
         <script src="{{ mix('js/app.js') }}"></script>

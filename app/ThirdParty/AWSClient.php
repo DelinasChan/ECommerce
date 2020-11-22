@@ -51,7 +51,7 @@ class AWSResult {
     {
         $this->result = $result ;
     }
-
+    
     /** 取得物件 Url */
     public function getObjectUrl()
     {
@@ -66,13 +66,12 @@ class AWSResult {
     public function saveToDB()
     {
         $src = $this->result["ObjectURL"] ;
-        
         $explodeSrc = explode( "/" , $src ) ;
         $name =  $explodeSrc[ count( $explodeSrc ) -1 ] ;
-        $insertMedia = [ "src" => $src , "name" =>$name ] ;
-        $Media = MediaModel::create( [ "src" => $src , "name" =>$name ] );
-        return [ "src" => $src , "name" =>$name  , "id" => $Media->id ];
-
+        /** 新增媒體庫 並記錄用戶Id */
+        $insertMedia = [ "src" => $src , "name" =>$name , "memberId"=>1 ] ;
+        $Media = MediaModel::create( $insertMedia );
+        return [ "src" => $src , "name" =>$name  , "id" => $Media->id , "alt" => $Media->alt ];
     }
 
 }
