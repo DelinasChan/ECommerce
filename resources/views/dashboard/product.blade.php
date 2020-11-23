@@ -18,7 +18,7 @@
 
         <!-- 產品描述(summernote) -->
         <div class="edit">
-            <textarea id="summernote" name="editordata"></textarea>
+            <textarea id="summernote" name="introduce"></textarea>
         </div>
 
         <!-- 詳細內容 -->
@@ -76,19 +76,20 @@
                 disableResizeEditor: true , lang:"zh-TW" ,
                 toolbar: [
                     // [groupName, [list of button]]
-                    ['style', ['bold', 'italic', 'underline', 'clear']],
-                    ['font', ['strikethrough', 'superscript', 'subscript']],
-                    ['fontsize', ['fontsize']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['height', ['height']],
-                    ["myBtn" , ["hello"]] 
+                    [ 'style' , ['bold', 'italic', 'underline', 'clear']],
+                    [ 'font'  , ['strikethrough', 'superscript', 'subscript']],
+                    [ 'fontsize', ['fontsize']],
+                    [ 'color' , [ 'color' ] ],
+                    [ 'para', [ 'ul', 'ol', 'paragraph' ] ],
+                    [ 'height', [ 'height' ] ] ,
+                    [ "myBtn" , [ "hello"  ] ] 
                 ],
-                buttons: {
+                buttons: { 
                     hello: HelloButton
                 }
 
             });
+
 
             $(".section-list > a ").click(function( ){
                 let selectId = $(this).attr("target") ;
@@ -101,15 +102,38 @@
                 });
             });
 
-
             $("#productForm").submit(function( event ){
-                let FormData = $(this).serializeArray() ;
+
+                let SubmitForm = $(this).serializeArray() ;
                 event.preventDefault()  ;
-                console.log( FormData ) ;
+
+                let attachments =  SubmitForm.filter(({ name }) => name == "preview[]" ).map(({ value }) => JSON.parse( value ) ) ;
+
+                //設定產品資料 & token
+                let token = $("input[name='_token']").val() ;
+                let headers = { 'X-CSRF-TOKEN':token ,     contentType: 'application/json; charset=UTF-8' };
+                let data = { attachments } , excludeName = [ "preview[]" , "_token" ];
+                SubmitForm.forEach(({ name , value })=>{
+                    if( excludeName.indexOf(name) == -1 ) { data[ name ] = value ; };
+                });
+                
+                fetch( "/dashboard/product/save" , { method:"POST" , body:JSON.stringify( data ), headers } )
+                    .then(( res  ) => res.json() )
+                    .then(( data ) => {
+                        console.log( "JSON" , data ) 
+                    });
+
                 return false ;
+
             });
 
         });
+
+        function delImage( index )
+        {   
+            let selector = `div[index=${index}]` ;
+            $( selector ).remove();
+        }
 
     </script>
 @stop

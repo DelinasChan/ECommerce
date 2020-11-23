@@ -17,9 +17,10 @@ class InitTableMigrate extends Migration
         Schema::create('product', function (Blueprint $table) {
             $table->increments("id");
             $table->string('name'); //產品名稱
-            $table->string('description'); //產品描述
-            $table->string('photo'); //產品圖片
-            $table->string('price')->nullable(false) ; //產品單價
+            $table->longText('introduce'); //產品描述
+            $table->longText('attachments'); //產品圖片
+            $table->string('discountPrice')->default(0) ; //售價
+            $table->string('originalPrice')->default(0) ; //原價
             $table->timestamps();
         });
 

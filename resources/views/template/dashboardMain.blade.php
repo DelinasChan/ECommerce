@@ -79,25 +79,37 @@
         <script>
 
             let ImageCallBack = {
-                galleryAddImage:( image )=>{
-                    let value = `src:${image.src}@alt:${image.alt}` ;
+                galleryAddImage:({ src , alt })=>{
+                    
+                    let value = JSON.stringify({ src , alt }) ;
+                    let total = $("div.preview").length ;
+                    let index = total + 1 ;
                     let insertHtml = `
-                        <div class='preview picture' >
+                        <div class='preview picture' index=${ index } >
                             <input type="hidden" name=preview[] value=${value} />
                             <img 
-                                src=${ image.src } alt=${ image.alt } 
+                                src='${ src }' alt='${ alt }' 
                                 height=80 width=150    
                             />
+                            <a onclick='delImage(${ index })'  >x</a>
                         </div>
                     `;
                     $( insertHtml ).insertBefore("div.no-image.openMediaBtn");
                 },
                 /** 插入文字編輯器 CallBack */
                 editorAddImage:({ src , alt }) => {
-                    $('#summernote').summernote('insertImage', src, function ($image) {
-                        $image.css('width', $image.width() / 3 );
-                        $image.attr('alt', alt );
-                    });
+
+                    let HtmlContent =  $('#summernote').summernote("code");
+                    let insertHtml  = `
+                        <div style='margin:8px auto ;' >
+                            <img 
+                                src='${ src }' alt='${ alt }'
+                                width=450 height=300 
+                            />
+                        </div>` ;
+                    let code =  HtmlContent + insertHtml ;
+                    $('#summernote').summernote( "code" , code );
+
                 }
             };
             
@@ -107,6 +119,8 @@
                     let callBackName = $(this).attr("callBack") ;
                     MediaLibrary.setCallBack( ImageCallBack[ callBackName ]  );
                 }) ;
+
+
 
             });
 

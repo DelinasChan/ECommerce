@@ -81,10 +81,8 @@ export default {
         /** 輸入 enter 變更 替代文字 */
         if( keyCode == 13 ){
             let { id , alt } = this.selectImg ;
-            axios.post("/api/media/update",  { id , alt })
-                .then(( response ) => {
-                    console.log( response );
-                });
+            axios.post("/api/media/update",  { id , alt });
+                // .then(( response ) => {));
 
         };
     },

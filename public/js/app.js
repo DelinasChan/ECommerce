@@ -2025,9 +2025,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
         axios__WEBPACK_IMPORTED_MODULE_0___default.a.post("/api/media/update", {
           id: id,
           alt: alt
-        }).then(function (response) {
-          console.log(response);
-        });
+        }); // .then(( response ) => {));
       }
 
       ;
