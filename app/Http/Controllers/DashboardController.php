@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\MediaModel ;
+use App\Models\ProductModel ;
 
 /** 後台控制器 */
 class DashboardController extends Controller
@@ -19,13 +20,12 @@ class DashboardController extends Controller
     /** 根據有無 productId 判斷是 編輯或建立 */
     public function product( Request $request , $productId = null  )
     {
-
         //有 id 就是編輯
-        $Product = [ "name" ];
         if( $productId > 0 ){  
             //根據 Model 抓 Product 
+            $Product = ProductModel::getProduct( $productId ) ;
+            return response()->json( $Product ) ;
         } ;
-
         return view("dashboard.product")->with( [ "productId" => $productId ]); ;
     }
 
@@ -36,9 +36,14 @@ class DashboardController extends Controller
      * @param Object request - FormData
      * 
     */
-    public function saveProduct( Request $requrest , $productId )
-    {
-        return view("dashboard.product")->with(["productId"=> $productId ]);
+    public function saveProduct( Request $request , $productId = null )
+    {   
+        $InsertProduct = $request->json()->all() ;
+        //序列化附加圖片
+        $attachments = $InsertProduct["attachments"]  ;
+        $InsertProduct["attachments"] = json_encode( $attachments );
+        $Product = ProductModel::Create( $InsertProduct ) ;
+        return  response()->json( $Product ) ;
     }
     
     /** 取得用戶Id 取得媒體庫資料 */

@@ -189,12 +189,20 @@ section.selected#gallery{
 
 .picture.preview{
     display: flex ;
+    position:relative ;
+
 }
 
 .picture.preview > img {
     height:80% ;
     align-self: center ;
 }
+
+.picture.preview > a{
+    position: absolute ; right: 15px ; top:20px ;
+    font-size:25px ; color: orange ;
+}
+
 
 .edit-block{
     margin: 5px 0 ;
