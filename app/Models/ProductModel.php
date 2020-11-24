@@ -18,9 +18,8 @@ class ProductModel extends Model
     public static function getProduct( $productId )
     {
         $Product = self::find( $productId );
-        if( !isset( $Product ))return [] ;
-        $Product["attachments"] = json_decode( $Product["attachments"] , false );
-        return $Product ;
+        return  new \App\Entity\Product( $Product ) ;
     }
 
 }
+
