@@ -4,7 +4,11 @@
     <!-- ProductFrom Start -->
     <form 
         id="productForm" method="POST"
-        action="/dashboard/product/save"
+        @if( $productId > 0 )
+            action= "/dashboard/product/save/{{ $productId }}"
+        @else
+            action= "/dashboard/product/save"
+        @endIf
     >
         @csrf
 
@@ -12,13 +16,15 @@
         <div class="edit">
             <input 
                 type="text" placeholder="產品名稱" 
-                value="" name="name"
+                value="{{ $product->name }}" name="name"
             >
         </div>
 
         <!-- 產品描述(summernote) -->
         <div class="edit">
-            <textarea id="summernote" name="introduce"></textarea>
+            <textarea id="summernote" name="introduce">
+            {{ $product->introduce }}
+            </textarea>
         </div>
 
         <!-- 詳細內容 -->
@@ -32,17 +38,37 @@
                 <section id="base"  class="selected" >
                     <div class="edit-block" >
                         <label>原價：</label>
-                        <input type="number" name="originalPrice" value="0" />
+                        <input 
+                            type="number" name="originalPrice" 
+                            value="{{ $product->originalPrice }}" 
+                        />
                     </div>
                     <div class="edit-block">
                         <label>特價：</label>
-                        <input type="number" name="discountPrice" value="0" />
+                        <input 
+                            type="number" name="discountPrice" 
+                            value="{{ $product->discountPrice }}" 
+                        />
                     </div>
                 </section>
-                <section id="gallery"  >
-                    <!-- 圖片列表 -->
 
-                    <!-- 新增圖片 -->
+                <section id="gallery" >
+
+                    <!-- 圖片列表 -->
+                    @foreach( $product->attachments as $key=>$attach )
+                        <div class="preview picture" index="{{ $key + 1 }}">
+                            <input type="hidden" name="preview[]" value="{{ $attach->value }}">
+                            <img src="{{ $attach->src }}" alt="{{ $attach->alt }}" height="80" width="150">
+                            <a 
+                                onclick="delImage( this )" 
+                                index ="{{ $key + 1 }}"
+                            >
+                                x
+                            </a>
+                        </div>
+                    @endforeach
+
+                    <!-- 新增圖片按鈕 -->
                     <div class="picture no-image openMediaBtn" callBack="galleryAddImage" >
                         &nbsp;
                     </div>
@@ -50,9 +76,11 @@
                 </section>
             </div>
         </div>
-        
+
         <div >
-            <input type="submit" value="提交表單" >
+            <input 
+                type="submit" value="{{ $productId > 0 ? '修改' : '建立' }}" 
+            />
         </div>
 
     </form>
@@ -63,10 +91,10 @@
         $(document).ready(function() {
 
             /**  初始化文字編輯器 */
-            let HelloButton = function (context) {
+            let MediaBotton = function (context) {
             let ui = $.summernote.ui;
             let button = ui.button({
-                    contents: '<i class="fa fa-child openMediaBtn" callBack="editorAddImage" /> Hello',
+                    contents: '<i class="fa fa-child openMediaBtn" callBack="editorAddImage" />媒體庫',
                 });
                 
                 return button.render(); 
@@ -82,10 +110,10 @@
                     [ 'color' , [ 'color' ] ],
                     [ 'para', [ 'ul', 'ol', 'paragraph' ] ],
                     [ 'height', [ 'height' ] ] ,
-                    [ "myBtn" , [ "hello"  ] ] 
+                    [ "media" , [ "media"  ] ] 
                 ],
                 buttons: { 
-                    hello: HelloButton
+                    media: MediaBotton
                 }
 
             });
@@ -105,9 +133,11 @@
             $("#productForm").submit(function( event ){
 
                 let SubmitForm = $(this).serializeArray() ;
-                event.preventDefault()  ;
+                let requestUrl =   $(this).attr("action") ;
 
-                let attachments =  SubmitForm.filter(({ name }) => name == "preview[]" ).map(({ value }) => JSON.parse( value ) ) ;
+                event.preventDefault()  ;
+                let attachments = SubmitForm.filter(({ name }) => name == "preview[]" )
+                                    .map(({ value } , index ) => JSON.parse( value ) ) ;
 
                 //設定產品資料 & token
                 let token = $("input[name='_token']").val() ;
@@ -117,23 +147,27 @@
                     if( excludeName.indexOf(name) == -1 ) { data[ name ] = value ; };
                 });
                 
-                fetch( "/dashboard/product/save" , { method:"POST" , body:JSON.stringify( data ), headers } )
+                fetch( requestUrl , { method:"POST" , body:JSON.stringify( data ), headers } )
                     .then(( res  ) => res.json() )
-                    .then(( data ) => {
-                        console.log( "JSON" , data ) 
-                    });
-
-                return false ;
+                    .then(( data ) => { if( data.status ){ location.reload(); }; });
 
             });
 
         });
 
-        function delImage( index )
+        function delImage( element )
         {   
-            let selector = `div[index=${index}]` ;
+            let index    = $( element ).attr("index")  ;
+            let selector = `div[index=${ index }]` ;
             $( selector ).remove();
-        }
+
+            let eachElement = document.querySelectorAll("#gallery > .preview") ;
+            $("#gallery > .preview").each(( index , el )=>{
+                $( el ).attr("index" , index + 1) ;
+                $(el).children("a").attr("index" , index + 1) ;
+            });
+
+        };
 
     </script>
 @stop

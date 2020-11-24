@@ -23,13 +23,15 @@ Route::get("/" , function(){
 Route::group( ["prefix" => "dashboard"] , function(){
 
     Route::get("/" ,  function(){ return "後台" ; });
+    Route::get("/products" , [ DashboardController::class , "products" ]);
 
+    /** 取得單一 或 編輯 產品 */
     Route::group([ "prefix" => "product" ] , function(){
 
         /** 列表產品 */
-        Route::get( "/" , [ DashboardController::class , "products" ] ) ;
-        Route::get( "edit/{productId}"   ,  [ DashboardController::class , "product" ] ) ;
+        Route::get( "{productId}"   ,  [ DashboardController::class , "product" ] ) ;
         Route::get( "create"   ,  [ DashboardController::class , "product" ] )    ;
+        Route::post( "save/{productId}"   ,  [ DashboardController::class , "saveProduct" ] ) ;
         Route::post( "save"   ,  [ DashboardController::class , "saveProduct" ] ) ;
         
     });

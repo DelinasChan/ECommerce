@@ -51,12 +51,8 @@
         <!-- SideBar Start -->
             <div class="sideBar">
                 <ul>
-                    <li class="list" >
-                        <a>產品</a>
-                        <ul class="sub" >
-                            <li> <a href="/dashboard/products"> 產品列表 </a></li>
-                        </ul>
-                    </li>
+                    <li> <a href="/dashboard/product/create" >新增產品</a></li>
+                    <li> <a href="/dashboard/products"> 產品列表 </a></li>
                     <li>
                         <a href="#"> 編輯資料 </a>
                     </li>
@@ -82,7 +78,7 @@
                 galleryAddImage:({ src , alt })=>{
                     
                     let value = JSON.stringify({ src , alt }) ;
-                    let total = $("div.preview").length ;
+                    let total = $("#gallery > div.preview").length ;
                     let index = total + 1 ;
                     let insertHtml = `
                         <div class='preview picture' index=${ index } >
