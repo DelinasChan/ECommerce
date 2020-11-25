@@ -15,9 +15,7 @@ use App\Http\Controllers\DashboardController ;
 
 Route::get("/" , function(){
 
-    $url = "http://eshopbulk.s3.ap-northeast-1.amazonaws.com/media/member_1/1605964320-close-up-of-squirrel-on-field-314865.jpg" ;
-    $arr =  explode(  "/" , $url  ) ;
-    dd( $arr[count(  explode(  "/" , $url  )) - 1  ]);
+    return time() ;
 });
 
 Route::group( ["prefix" => "dashboard"] , function(){
@@ -52,9 +50,30 @@ Route::group(["prefix" => "ecpay"] , function(){
     Route::post("callBack"   , [ ECPayController::class , "notifyCallBack" ]);
 });
 
+
 Route::group(["prefix" => "member"] , function( ){
+
+    /** 會員註冊 */
+    Route::get(  "register" , function(){
+        return view("dashboard.register");
+    });
+    /** 會員登入 */
+    Route::get(  "login" , function(){
+        return view("dashboard.login");
+    });
+
+    /** 第三方登入驗證 #目前只有臉書 */
+    Route::group( ["prefix" => "auth"] , function(){
+        Route::get("facebook" , [ MemberController::class , "fbLogin" ] );
+        Route::get( "fb-callback" , [ MemberController::class , "fbCallBack" ]);
+    });
+
+    Route::post( "register" , [ MemberController::class , "register"] );
+    Route::post( "login" , [ MemberController::class , "login"] );
+
     /** 根據memberId 參數 驗證信箱 */
     Route::get("verifyMail/{memberId}" , [ MemberController::class , "verifyMail" ] );
+
 });
 
 /** ajax api Route */
@@ -88,20 +107,5 @@ Route::group( [ "prefix" => "api" ] , function(){
         return response()->json( $result );
         
     });
-
-
-
-});
-
-
-/** 測試路由 */
-Route::group(["prefix" => "test"] , function( ){
-
-    Route::get("/" , function(){
-        return strtoupper( substr( hash("md5" , time() ) , 0 , 10 ) );
-    });
-
-    /** 會員註冊 送出信箱 */
-    Route::post( "register" , [ MemberController::class , "register" ] );
 
 });

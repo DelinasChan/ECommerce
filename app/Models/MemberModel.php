@@ -11,6 +11,6 @@ class MemberModel extends Model
     protected $table = 'member' ;
     protected $fillable = [ 
         "email" , "username" , "account" , "password" , 
-        "introduction" , "photo" , "mail_token"
+        "photo" , "mail_token" , "fb_id"
     ] ;
 }

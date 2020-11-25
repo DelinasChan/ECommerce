@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>管理後台-{{ $productId ? 'XXX產品' : '新增商品' }}</title>
+
+    <title>@yield("title")</title>
 
     <!-- 引用本地CSS -->
     <link href="{{ URL::asset('/css/dashboard.css') }}" rel="stylesheet">

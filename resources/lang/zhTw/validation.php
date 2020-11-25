@@ -141,7 +141,10 @@ return [
         ],
         "username" => [
             "regex" => "姓名只能輸入中英文" ,
-            "min"   => "姓名至少兩個字" 
+            "min"   => "姓名至少三個字" 
+        ],
+        "validCode" => [
+            "captcha" => "驗證碼錯誤"
         ]
     ],
 
@@ -157,8 +160,8 @@ return [
     */
 
     'attributes' => [
-        "account" => "帳號" ,
-        "email"   => "信箱"
+        "account"   => "帳號" , "email" => "信箱" , "password"  => "密碼" ,
+        "username" => "用戶名稱" , "validCode" => "驗證碼"
     ],
 
 ];
