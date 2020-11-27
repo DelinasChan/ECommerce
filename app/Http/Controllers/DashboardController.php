@@ -11,7 +11,12 @@ use App\Models\ProductModel ;
 class DashboardController extends Controller
 {
 
-    /** 產品列表 */
+    /** 
+     * 分頁查詢產品產品列表  
+     * 
+     * @param Int page 
+     * 
+     * */
     public function products()
     {
         // return view("dashboard.products") ;

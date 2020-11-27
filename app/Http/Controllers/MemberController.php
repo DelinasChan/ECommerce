@@ -27,25 +27,36 @@ class MemberController extends Controller
         try{
 
             $user = Socialite::driver('facebook')->user();
-            $user->facebook_id = $user->getId();
-            $ap = "FACEBOOK"  . time()  ; //帳號密碼 FACEBOOK + 時間戳記
-            $CreateData = [
-                "fb_id" => $user->getId()    ,
-                "username"  => $user->getName()  ,
-                "email" => $user->getEmail() ,
-                "photo" => $user->getAvatar(), // 照片等於網址
-                "account" => $ap , "password" =>  $ap ,
-                "mail_token" => "SUCCESS"
+            $fbId = $user->getId();
+            //檢查是否有用 FB登入過 沒有則建立
+            $LoginUser = MemberModel::where( "fb_id" , $fbId )->first();
+
+            if( !$LoginUser ){
+                $CreateData = [
+                    "fb_id" => $user->getId()    ,
+                    "username"  => $user->getName()  ,
+                    "email" => $user->getEmail() ,
+                    "photo" => $user->getAvatar(), // 照片等於網址
+                    "account" => $fbId . "@FACEBOOK", "password" => $fbId . "@FACEBOOK" ,
+                    "mail_token" => "SUCCESS"
+                ];
+                //不做信箱驗證( 臉書驗證過 )
+                $LoginUser = MemberModel::Create( $CreateData );
+            };
+
+            //session 設定 登入用戶 只存id 跟 fb_id
+            $userData = [
+                "id" => $LoginUser->id ,
+                "fb_id" => $LoginUser->fb_id
             ];
-            //不做信箱驗證( 臉書驗證過 )
-            $Member = MemberModel::Create( $CreateData );
+            session()->put( "user" , $userData );
+            //成功後 重導向到首頁
             return redirect("/") ;
+
         }catch( Exception $e ){
             return redirect("/") ;
         }
 
-
-        // return Socialite::driver('facebook')->redirectUrl($redirectUrl)->redirect();
     }
 
 
