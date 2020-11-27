@@ -12,46 +12,54 @@ use App\Http\Controllers\MemberController ;
 use App\Http\Controllers\CartController ;
 use App\Http\Controllers\DashboardController ;
 
+Route::get("/" ,  [ CartController::class , "products" ]);
+Route::get("/product/{productId}" ,  [ CartController::class , "readProduct" ]);
+Route::post("/shop/{productId}" ,  [ CartController::class , "readProduct" ]);
 
-Route::get("/" , function(){
-
-    return time() ;
-});
-
-Route::group( ["prefix" => "dashboard"] , function(){
-
+Route::group( ["prefix" => "dashboard" , "middleware" => "login" ] , function(){
+    
+    //後台首頁( 顯示 歷史訂單 查看訂單 管理商品 )
     Route::get("/" ,  function(){ return "後台" ; });
     Route::get("/products" , [ DashboardController::class , "products" ]);
 
     /** 取得單一 或 編輯 產品 */
     Route::group([ "prefix" => "product" ] , function(){
-
-        /** 列表產品 */
         Route::get( "{productId}"   ,  [ DashboardController::class , "product" ] ) ;
         Route::get( "create"   ,  [ DashboardController::class , "product" ] )    ;
         Route::post( "save/{productId}"   ,  [ DashboardController::class , "saveProduct" ] ) ;
-        Route::post( "save"   ,  [ DashboardController::class , "saveProduct" ] ) ;
-        
+        Route::post( "save"   ,  [ DashboardController::class , "saveProduct" ] ) ; 
     });
 
 });
 
 /** 購物車資料存在 window.localStorage */
-Route::get("/shop/cart" , [ ECPayController::class , "test" ] );
+Route::group([ "prefix" => "shop" ] , function(){
 
+    /** 變更購物車 新增或修改數量 */
+    Route::post(   "modifyCart/{productId}" , [ CartController::class   , "modifyCart" ] );
+    Route::delete( "modifyCart/{productId}" , [ CartController::class , "readCart" ]);
+    /** 查看購物車頁面 */
+    Route::get("cart" , [ CartController::class , "readCart" ])->middleware("login");
+
+});
 
 /** 綠界金流相關路由 */
 Route::group(["prefix" => "ecpay"] , function(){
     /** 按下立即購買 表單重導向 */
-    Route::post("payNow"     , [ ECPayController::class , "payNow" ] );
+    Route::get("payNow"     , [ ECPayController::class , "payNow" ] )->middleware("login");;
     /** 客戶端重導向結果頁面 */
-    Route::post("resultPage" , [ ECPayController::class , "clientResult" ] );
+    Route::post("clientResult" , [ ECPayController::class , "clientResult" ] );
     /** 金流 callBack 處理網址  */
     Route::post("callBack"   , [ ECPayController::class , "notifyCallBack" ]);
 });
 
+/** 登出 */
+Route::get("member/logout", function(){
+    session()->forget('user');
+    return redirect("/");
+});
 
-Route::group(["prefix" => "member"] , function( ){
+Route::group(["prefix" => "member", "middleware"=>["NotLogin"]] , function( ){
 
     /** 會員註冊 */
     Route::get(  "register" , function(){
@@ -97,15 +105,7 @@ Route::group( [ "prefix" => "api" ] , function(){
     Route::get("/media" , [ DashboardController::class ,  "getMedia" ] );
     Route::post("/media/update" , [ DashboardController::class ,  "updateMedia" ] );
 
-    Route::post("/test" , function( Request $request ){
-        $result = [];
-        foreach( $request->get("image") as $json )
-        {
-           array_push( $result , json_decode( $json ) );
-        };
-        
-        return response()->json( $result );
-        
-    });
+    /** 前台購物車 */
+    Route::get("/front/products" , [ CartController::class , "products" ] );
 
 });

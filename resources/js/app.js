@@ -12,3 +12,10 @@ new Vue({
         "media-library":MediaLibrary ,
     }
 });
+
+new Vue({
+    el:"#product-list" ,
+    components:{
+        "media-library":MediaLibrary ,
+    }
+});

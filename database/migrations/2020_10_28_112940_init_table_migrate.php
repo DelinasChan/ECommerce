@@ -27,13 +27,12 @@ class InitTableMigrate extends Migration
         /** 會員資料表 */
         Schema::create('member', function (Blueprint $table) {
             $table->increments("id");
-            $table->string('name'); //會員名稱
+            $table->string('username'); //會員名稱
             $table->string('account'); //帳號
             $table->string('email')->unique() ; //會員信箱
             $table->string('password')->unique() ; //密碼
-            $table->string('introduction'); //自我介紹
             $table->string('photo'); //會員照片
-            $table->timestamps();
+            $table->timestamps()->useCurrent() ;
         });
 
         /** 訂單(可以為登入時購買) */
@@ -49,18 +48,17 @@ class InitTableMigrate extends Migration
 
         /** 訂單列表 */
         Schema::create('orderItem', function (Blueprint $table) {
+            
             $table->increments("id");
             $table->unsignedInteger("orderId")   ;
-            $table->unsignedInteger("productId") ;
+            $table->integer("productId") ;
             $table->integer("price") ; //購買時單價
             $table->integer("quant") ; //購買時數量
-            $table->timestamps();
+            $table->timestamps()->useCurrent();
 
             /** 設定外來建 */
             $table->foreign("orderId")->references("id")->on('order')    ; //訂單編號
-            $table->foreign("productId")->references("id")->on('product'); //該訂單對應產品
-
-
+            
         });
         
     }

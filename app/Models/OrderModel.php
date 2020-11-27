@@ -10,6 +10,6 @@ class OrderModel extends Model
     use HasFactory;
     protected $table = 'order' ;
     protected $fillable = [ 
-        "memberId" , "payStatus" , "ecPay_tradeNo" , "amount" , 
+        "id" , "memberId" , "payStatus" , "ecPay_tradeNo" , "amount" , 
     ] ;
 }

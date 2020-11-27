@@ -33423,6 +33423,12 @@ new Vue({
     "media-library": _components_Medialib__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
+new Vue({
+  el: "#product-list",
+  components: {
+    "media-library": _components_Medialib__WEBPACK_IMPORTED_MODULE_1__["default"]
+  }
+});
 
 /***/ }),
 

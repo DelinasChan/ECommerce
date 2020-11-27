@@ -26,6 +26,7 @@ class Product {
             $this->attachments   = $attachments ;
             $this->discountPrice = $Product->discountPrice ;
             $this->originalPrice = $Product->originalPrice ;
+            $this->fold          = floor( $Product->discountPrice / $Product->originalPrice  * 100 ) ; //折扣數
         }
 
     }
