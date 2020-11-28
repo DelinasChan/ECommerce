@@ -85,8 +85,7 @@
                     .then(({ data , total }) => {
                         if( $("#shop-cart").length > 0 ){
                             $(`div[productId=${ productId }]`).remove();
-                            if(  $(`div[productId=${ productId }]`).length == 0 )
-                            {
+                            if(  $("div[productId]").length == 0 ) {
                                 alert("購物車已清空");
                                 location.href = "/";
                             };
