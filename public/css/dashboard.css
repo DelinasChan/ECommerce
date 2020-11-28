@@ -374,3 +374,10 @@ section.selected#gallery{
     display: inline-block ;
     padding: 0 25px ;
 }
+
+
+.profile img{
+    width: 150px;
+    height: 150px;
+    border-radius: 80%;
+}
