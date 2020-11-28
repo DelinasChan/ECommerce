@@ -20,7 +20,7 @@ export default {
 
         axios({
             method: 'post', data: form ,
-            url: 'http://localhost:8000/api/s3/upload',
+            url: '/api/s3/upload',
             headers: {
                 'accept': 'application/json',
                 'Content-Type': `multipart/form-data;`,

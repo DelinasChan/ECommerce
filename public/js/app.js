@@ -2431,7 +2431,7 @@ __webpack_require__.r(__webpack_exports__);
     axios__WEBPACK_IMPORTED_MODULE_0___default()({
       method: 'post',
       data: form,
-      url: 'http://localhost:8000/api/s3/upload',
+      url: '/api/s3/upload',
       headers: {
         'accept': 'application/json',
         'Content-Type': "multipart/form-data;"

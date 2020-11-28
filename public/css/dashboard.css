@@ -27,6 +27,7 @@
     width: 85% ; left: 50% ; top:50% ;
     background-color: rgb( 193 , 193 , 193 , .95 ) ;
     transform: translate( -50% , -50% );
+    min-height: 650px ;
 }
 
 #darkBox > .render .content{
