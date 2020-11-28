@@ -13,17 +13,17 @@
         @csrf
 
         <!-- 產品名稱 -->
-        <div class="edit">
+        <div class="edit" name="name" label="產品名稱">
             <input 
                 type="text" placeholder="產品名稱" 
-                value="{{ $product->name }}" name="name"
+                value="{{ $product->name ?? '' }}" name="name"
             >
         </div>
 
         <!-- 產品描述(summernote) -->
         <div class="edit">
-            <textarea id="summernote" name="introduce">
-            {{ $product->introduce }}
+            <textarea id="summernote" name="introduce" label="產品描述" >
+            {{ $product->introduce ?? '' }}
             </textarea>
         </div>
 
@@ -36,37 +36,40 @@
             <!-- 預設第一個 -->
             <div class="section-item">
                 <section id="base"  class="selected" >
-                    <div class="edit-block" >
+                    <div class="edit-block" label="特價" name="originalPrice" >
                         <label>原價：</label>
                         <input 
                             type="number" name="originalPrice" 
-                            value="{{ $product->originalPrice }}" 
+                            value="{{ $product->originalPrice ?? '' }}" 
                         />
                     </div>
-                    <div class="edit-block">
+                    <div class="edit-block" label="特價" name="discountPrice" >
                         <label>特價：</label>
                         <input 
                             type="number" name="discountPrice" 
-                            value="{{ $product->discountPrice }}" 
+                            value="{{ $product->discountPrice ?? '' }}" 
                         />
                     </div>
                 </section>
 
-                <section id="gallery" >
+                <section id="gallery" label="相關圖片" name="attachments" >
 
                     <!-- 圖片列表 -->
-                    @foreach( $product->attachments as $key=>$attach )
-                        <div class="preview picture" index="{{ $key + 1 }}">
-                            <input type="hidden" name="preview[]" value="{{ $attach->value }}">
-                            <img src="{{ $attach->src }}" alt="{{ $attach->alt }}" height="80" width="150">
-                            <a 
-                                onclick="delImage( this )" 
-                                index ="{{ $key + 1 }}"
-                            >
-                                x
-                            </a>
-                        </div>
-                    @endforeach
+                    @if( $product )
+                        @foreach( $product->thumbnail as $key=>$attach )
+                            <div class="preview picture" index="{{ $key + 1 }}">
+                                <input type="hidden" name="preview[]" value="{{ $attach->value }}">
+                                <img src="{{ $attach->src }}" alt="{{ $attach->alt }}" height="80" width="150">
+                                <a 
+                                    onclick="delImage( this )" 
+                                    index ="{{ $key + 1 }}"
+                                >
+                                    x
+                                </a>
+                            </div>
+                        @endforeach
+                    @endif
+
 
                     <!-- 新增圖片按鈕 -->
                     <div class="picture no-image openMediaBtn" callBack="galleryAddImage" >
@@ -77,7 +80,7 @@
             </div>
         </div>
 
-        <div >
+        <div>
             <input 
                 type="submit" value="{{ $productId > 0 ? '修改' : '建立' }}" 
             />
@@ -134,8 +137,29 @@
 
                 let SubmitForm = $(this).serializeArray() ;
                 let requestUrl =   $(this).attr("action") ;
-
+                
                 event.preventDefault()  ;
+
+                //檢查表單 
+                let emptyError = SubmitForm.filter(({ value })=> !value)
+                                    .map(({ name })=>  $(`[name=${name}]`).attr("label") );
+                
+                if( $("input[name='preview[]'").length == 0 ){
+                    emptyError.push("相關圖片");
+                };
+
+                if( emptyError.length > 0 ){
+                    alert( emptyError.join("\n") + "\n 尚未填寫" );
+                    return false ;
+                };
+
+                let discountPrice = $("input[name=discountPrice]").val();
+                let originalPrice =  $("input[name=originalPrice]").val();
+                if( ( discountPrice - originalPrice ) > 0 ){
+                    alert("特價不能大於原價");
+                    return false ;
+                }
+
                 let attachments = SubmitForm.filter(({ name }) => name == "preview[]" )
                                     .map(({ value } , index ) => JSON.parse( value ) ) ;
 

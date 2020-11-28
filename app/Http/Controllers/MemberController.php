@@ -46,15 +46,15 @@ class MemberController extends Controller
 
             //session 設定 登入用戶 只存id 跟 fb_id
             $userData = [
-                "id" => $LoginUser->id ,
-                "fb_id" => $LoginUser->fb_id
+                "id"    => $LoginUser->id , "fb_id" => $LoginUser->fb_id ,
+                "name"  => $LoginUser->username , "photo" => $LoginUser->photo  
             ];
             session()->put( "user" , $userData );
             //成功後 重導向到首頁
-            return redirect("/") ;
+            return redirect("") ;
 
         }catch( Exception $e ){
-            return redirect("/") ;
+            return redirect("") ;
         }
 
     }
@@ -69,8 +69,7 @@ class MemberController extends Controller
     {   
 
         $body = $request->all() ;
-
-        $account = $body["account"];
+        $account  = $body["account"];
         $password = $body["password"] ;
         /** 密碼 以 MD5 加密後比對 */
         $paramter = [ $account , $account , Crypto::hash( $password ) ] ;
@@ -78,6 +77,11 @@ class MemberController extends Controller
         if( !isset( $Member ) ){
             return response()->json(["status" => false , "message" => "登入失敗 帳號或密碼錯誤 ... " ]) ;
         }else{
+            $user = [
+                "id"    => $Member->id , "fb_id" => $Member->fb_id ,
+                "name"  => $Member->username , "photo" => $Member->photo  
+            ];
+            session()->put( "user", $user );
             return response()->json(["status" => true  , "message" => "成功" ]) ;
         };
     }

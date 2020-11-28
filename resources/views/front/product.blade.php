@@ -10,11 +10,12 @@
                 
                 <div class="preview">
                     <img 
-                        src="{{ $product->attachments[0]->src }}"
+                        src="{{ $product->image->src }}"
+                        width=300
                     />
                 </div>
                 <div class="gallery">
-                    @foreach(  $product->attachments as $attach )
+                    @foreach(  $product->thumbnail as $attach )
                         <a
                             src="{{ $attach->src }}"
                         >
@@ -59,7 +60,7 @@
 
                 <div>
                     @if( $product->inCart )
-                        <a  productId="{{ $product->id }}" active="inCart" > 已在購物車中
+                        <a  productId="{{ $product->id }}" active="inCart" > 已在購物車
                         </a>
                     @else
                         <a productId="{{ $product->id }}" active="addCart" > 加入購物車 </a>

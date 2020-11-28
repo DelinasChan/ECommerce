@@ -3,6 +3,6 @@
 @section("content")
     <!-- Product List Start -->
     <div id="data-list"> 
-        <product-data></product-data>
+        <order-data></order-data>
     </div>
 @stop

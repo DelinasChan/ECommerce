@@ -59,8 +59,8 @@ class ECPayController extends Controller
         $result = $this->cart->setPayResult( $data ) ;
 
         //訂單更新完成 購物車直接建立新的在重導向到首頁
-        session()->put("cart" , []);
-        return redirect("/");
+        session()->put( "cart" , [] );
+        return redirect("");
     }
 
     /** 綠界回傳資料給伺服器 做後續處理  */

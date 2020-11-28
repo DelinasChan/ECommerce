@@ -18,9 +18,14 @@ Route::post("/shop/{productId}" ,  [ CartController::class , "readProduct" ]);
 
 Route::group( ["prefix" => "dashboard" , "middleware" => "login" ] , function(){
     
-    //後台首頁( 顯示 歷史訂單 查看訂單 管理商品 )
-    Route::get("/" ,  function(){ return "後台" ; });
-    Route::get("/products" , [ DashboardController::class , "products" ]);
+    /** 產品及訂單 透過 VUE 渲染 */
+    Route::get("products" , function(){
+        return view("dashboard.products");
+    });
+
+    Route::get("orders" , function(){
+        return view("dashboard.orders");
+    });
 
     /** 取得單一 或 編輯 產品 */
     Route::group([ "prefix" => "product" ] , function(){
@@ -46,7 +51,7 @@ Route::group([ "prefix" => "shop" ] , function(){
 /** 綠界金流相關路由 */
 Route::group(["prefix" => "ecpay"] , function(){
     /** 按下立即購買 表單重導向 */
-    Route::get("payNow"     , [ ECPayController::class , "payNow" ] )->middleware("login");;
+    Route::get("payNow"     , [ ECPayController::class , "payNow" ] )->middleware("login");
     /** 客戶端重導向結果頁面 */
     Route::post("clientResult" , [ ECPayController::class , "clientResult" ] );
     /** 金流 callBack 處理網址  */
@@ -92,7 +97,8 @@ Route::group( [ "prefix" => "api" ] , function(){
         {
             $file =$request->file('image');
             try{
-                $result = AWSClient::uploadS3( $file , "media/member_1/" )->saveToDB() ;
+                $memberId = session()->get("user")["id"] ;
+                $result = AWSClient::uploadS3( $file , "media/member_$memberId/" )->saveToDB() ;
                 return response()->json([  "status" => true , "result" => $result ]);    
             }catch( S3Exception $e ){
                 return response()->json([  "status" => false , "message" => $e ]);
@@ -100,12 +106,20 @@ Route::group( [ "prefix" => "api" ] , function(){
         }else{
             return response()->json([  "status" => false , "message" => "file is empty" ]);
         }
-    });
+    })->middleware("login");
 
-    Route::get("/media" , [ DashboardController::class ,  "getMedia" ] );
-    Route::post("/media/update" , [ DashboardController::class ,  "updateMedia" ] );
+    Route::get("media" , [ DashboardController::class ,  "getMedia" ] );
+    Route::post("media/update" , [ DashboardController::class ,  "updateMedia" ] );
 
     /** 前台購物車 */
-    Route::get("/front/products" , [ CartController::class , "products" ] );
+    Route::get("front/products" , [ CartController::class , "products" ] );
+
+    /** 取得產品列表 */
+    Route::get("dashboard/products" , [ DashboardController::class , "products" ] )->middleware("login");
+    Route::delete("delete/product/{productId}" ,[ DashboardController::class , "delProduct" ])->middleware("login");
+    //取得歷史訂單
+    Route::get("dashboard/orders" , [ DashboardController::class , "orders" ] )->middleware("login");
+
 
 });
+

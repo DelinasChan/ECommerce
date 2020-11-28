@@ -25,15 +25,22 @@ a[href]{
 }
 
 .navbar .item-container{
-    display: flex ; width: 200px  ;
+    display: flex ; width: 300px  ;
     justify-content: space-around ;
     align-self: center ;
 }
 
 .navbar .item-container > div{
     display:  flex; 
-    flex-direction: column ;
     justify-content: center ;
+    align-items: center;
+}
+
+.navbar .item-container > .right  {
+    font-size: 15px ;
+    display: flex ;
+    justify-content: space-around ;
+    width: 60% ;
 }
 
 .goHome{
@@ -116,12 +123,12 @@ a[href]{
 
 .products .product-list {
     display: flex ;
-    justify-content: space-around ;
+    justify-content: flex-start ;
     flex-wrap: wrap ;
 }
 
 .product-list > div {
-    flex-basis:calc( 100% / 5 );
+    flex-basis: 180px ;
     margin: 10px ;
     position: relative ;
     box-shadow: 0 0 5px;    
@@ -144,8 +151,7 @@ a[href]{
 }
 
 .info > div:first-child a{
-    font-size: 25px ;
-    line-height: 2  ;
+    font-size: 15px ;
 }
 
 .product > a.disocunt{
@@ -269,10 +275,10 @@ a.productName{
 
 a[active]{
     display: inline-block ;
-    padding: 5px 10px ; cursor: pointer ;
-    color:  #fff    ; font-size: 18px ;
-    font-weight: 600;
-    border-radius: 10px;
+    padding: 0px 10px ; cursor: pointer ;
+    color:  #fff    ; font-size: 15px ;
+    font-weight: 200;
+    border-radius: 5px;
 }
 
 a[active=addCart]{
@@ -300,6 +306,14 @@ a[active=inCart]{
 .baseInfo .gallery a {
     padding: 15px 10px ;
     display: inline-block ;
+}
+
+#shop-cart .product > div:last-child a {
+    display:inline-block ;
+    font-size: 15px   ;
+    font-weight: 1000 ;
+    color:#fff ;
+    line-height:  2;
 }
 
 #shop-cart .products{
@@ -359,3 +373,4 @@ a[active=buyNow]{
     border-radius: 5px ; cursor: pointer ;
     color: #fff ;
 }
+
