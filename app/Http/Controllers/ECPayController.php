@@ -56,18 +56,20 @@ class ECPayController extends Controller
         // return "客戶端";
         $data = $request->all();
         //設定付款結果
-        $result = $this->cart->setPayResult( $data ) ;
-
-        //訂單更新完成 購物車直接建立新的在重導向到首頁
-        session()->put( "cart" , [] );
-        return redirect("");
+        // $result = $this->cart->setPayResult( $data ) ;
+        // //訂單更新完成 購物車直接建立新的在重導向到首頁
+        // session()->put( "cart" , [] );
+        $message =  $data["RtnCode"] == 1 ? "付款成功" : "付款失敗";
+        return "<script>alert($message);setTimeout(()=>{ location.href='/' },3000)</script>";
     }
 
     /** 綠界回傳資料給伺服器 做後續處理  */
     public function notifyCallBack( Request $req )
     {
-        
-        return "客戶端";
+        // return "客戶端";
+        $data = $request->all();
+        //設定付款結果
+        $result = $this->cart->setPayResult( $data ) ;
     }
 
 }
