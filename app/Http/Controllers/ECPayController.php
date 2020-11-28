@@ -60,7 +60,7 @@ class ECPayController extends Controller
         // //訂單更新完成 購物車直接建立新的在重導向到首頁
         // session()->put( "cart" , [] );
         $message =  $data["RtnCode"] == 1 ? "付款成功" : "付款失敗";
-        return "<script>alert($message);setTimeout(()=>{ location.href='/' },3000)</script>";
+        return "<script>alert('$message');setTimeout(()=>{ location.href='/' },3000)</script>";
     }
 
     /** 綠界回傳資料給伺服器 做後續處理  */
