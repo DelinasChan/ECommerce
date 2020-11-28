@@ -77,13 +77,16 @@ export default {
         .then(( response ) => { this.images = response.data ; });
   },
   methods:{
-    changeImage:function({keyCode }){
+    changeImage:async function({keyCode }){
         /** 輸入 enter 變更 替代文字 */
         if( keyCode == 13 ){
             let { id , alt } = this.selectImg ;
-            axios.post("/api/media/update",  { id , alt });
-                // .then(( response ) => {));
-
+            await axios.post("/api/media/update",  { id , alt });
+            this.images.forEach((image )=>{
+                if( image.id == id ){
+                    image.alt = alt ; 
+                }
+            })
         };
     },
     copyText:function({ target:node }){

@@ -51,12 +51,22 @@
     <div  class="dashboard">
         <!-- SideBar Start -->
             <div class="sideBar">
-                <ul>
+                <div class="profile">
+                    <div class="photo">
+                        <img 
+                            src="{{ Session::get("user")["photo"] }}"
+                        />
+                    </div>
+                    <div class="person">
+                        <a>{{ Session::get("user")["name"] }}</a>
+                        <a href="/member/logout" >登出</a>
+                    </div>
+                </div>
+                <ul class="item" >
                     <li> <a href="/dashboard/product/create" >新增產品</a></li>
-                    <li> <a href="/dashboard/products"> 產品列表 </a></li>
-                    <li>
-                        <a href="#"> 編輯資料 </a>
-                    </li>
+                    <li> <a href="/dashboard/products"> 產品列表 </a>     </li>
+                    <li> <a href="/dashboard/orders"> 歷史訂單 </a>       </li>
+                    <li> <a href="/"> 回首頁 </a>       </li>
                 </ul>
             </div>       
         <!-- SideBar End   -->
@@ -127,8 +137,8 @@
             });
 
         </script>
-
-        <script src="{{ mix('js/app.js') }}"></script>
+        
+        <script src="{{ URL::asset('/js/app.js') }}"></script>
 
     </div>
 </body>

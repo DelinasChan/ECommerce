@@ -14,7 +14,7 @@
                     <a class="disocunt"  >現省{{ $product->fold }}折</a>
                     <!-- 圖片-->
                     <div class="preview">
-                        <img src="{{ $product->image->src }}" width=50 height=50 />
+                        <img src="{{ $product->image->src }}" width=20 height=30 />
                     </div>
 
                     <div class="info">
@@ -33,7 +33,7 @@
                             </a>
                             @if( $product->inCart )
                                 <a  productId="{{ $product->id }}" active="inCart" >
-                                    已在購物車中
+                                    已在購物車
                                 </a>
                             @else
                                 <a productId="{{ $product->id }}" active="addCart" >

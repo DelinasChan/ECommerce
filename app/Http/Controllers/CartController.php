@@ -19,34 +19,16 @@ class CartController extends Controller
      */
     public function products( Request $request )
     {      
-        $perPage = 12 ;
         $query =$request->query();
         $page = isset( $query["page"] ) ? $query['page'] : 1 ;
-        $paginator = ProductModel::orderBy('createdAt', 'DESC')->paginate( $perPage , ["*"] , "page" , $page ) ; 
-        $lastPage = $paginator->lastPage()  ;
-        $items = $paginator->items() ; $data = [] ;
-
-        $cart = session()->get("cart") ;
-        if( !$cart ){
-            session()->put( "cart" , []);
-        };
-
-        foreach( $items as $item )
-        {
-            $item["attachments"] = json_decode( $item["attachments"] , false );
-            $item["image"] = $item["attachments"][0] ; //精選圖
-            $item["fold"] = floor( ( $item["discountPrice"] / $item["originalPrice"] ) * 100 ); //折數
-            //檢查該商品是否在購物車中
-            $item["inCart"] = isset( $cart[$item["id"]] );
-            array_push( $data , $item );
-        }
-        // return $data ;
-        return view( "front.home" , [ "lastPage" => $lastPage , "data" => $data ] );
+        $result = ProductModel::getProducts( $page , false , 12 );
+        return view( "front.home" , $result );
     }
 
     public function readProduct( Request $request , $productId )
     {
-       $Product = ProductModel::getProduct( $productId ) ;
+       $Product = ProductModel::find( $productId ) ;
+       if( !$Product ) return redirect("/");
        $Product->inCart = isset(  session()->get("cart")[ $Product->id ] );
        return view(" front.product " ,  [ "product" => $Product ]) ;
     }
@@ -103,7 +85,6 @@ class CartController extends Controller
         };
 
         $data = ProductModel::whereIn("id", $keys )->get();
-
         foreach( $data as $product )
         {
             $product["quantity"] = $cart[ $product["id"] ]["quantity"];
@@ -114,12 +95,13 @@ class CartController extends Controller
         /** 移除商品 回傳 JSON資料 */
         $result =  [ "data" => $data , "total" => $total , "action" => $request->isMethod('delete') ] ;
         if( $request->isMethod('delete') ){
-            return response()->json( $result);
+            return response()->json( $result );
         }else{
             // GET 回傳頁面 資料
             return view( "front.cart" , $result  );
         };
 
     }
+
 
 }

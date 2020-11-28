@@ -51,10 +51,9 @@ class CartService{
             preg_match( "/[0-9A-Za-z]{20}/" , Hash::make(time()) , $matchStr ); 
             $orderId = strtoupper( implode ( $matchStr ) );
             $Order   = OrderModel::where("id" , "=" , $orderId )->first() ;
-        }while( $Order );
+        }while( $Order && ( count( $orderId ) == 20 ) );
 
         $Order = [ "id" => $orderId , "memberId" => $memberId ];
-
         $insertItem = [] ;
         $sendItem = [] ; //送到綠界訂單資料
         foreach( $data as $Product )
@@ -62,7 +61,8 @@ class CartService{
 
             $Item = [ 
                 "productId" => $Product->id , "price" => $Product->discountPrice ,
-                "quant"     => $Product->quantity , "orderId" => $orderId
+                "quant"     => $Product->quantity , "orderId" => $orderId ,
+                "productName" => $Product->name
             ];
 
             array_push( $insertItem , $Item );
@@ -81,7 +81,7 @@ class CartService{
     }
 
     public function setPayResult( $payResult )
-    {   
+    {
         $id = $payResult["MerchantTradeNo"]  ;
         $status = $payResult["RtnCode"] == 1 ;
         $changeData = [

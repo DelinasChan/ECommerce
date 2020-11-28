@@ -16,7 +16,7 @@ class Product {
         if( $Product )
         {   
             $attachments = json_decode( $Product->attachments , false ) ;
-            foreach( $attachments as $attachment )
+            foreach( $attachments as $key => $attachment )
             {
                 $attachment->value = json_encode( $attachment );
             };
@@ -27,6 +27,8 @@ class Product {
             $this->discountPrice = $Product->discountPrice ;
             $this->originalPrice = $Product->originalPrice ;
             $this->fold          = floor( $Product->discountPrice / $Product->originalPrice  * 100 ) ; //折扣數
+            $this->image         = $attachments[0] ;//第 一張 圖片 當預覽圖
+            $this->createdAt     = $Product->createdAt ;
         }
 
     }

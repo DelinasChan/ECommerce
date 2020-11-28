@@ -37,8 +37,11 @@
                     &nbsp;
                 </a>
                 </div>
-                <div>
+                <div class="right" >
                     @if(Session::has('user'))
+                        <a href="/dashboard/products" >
+                            進入後台
+                        </a>
                         <a href="/member/logout" > LogOut </a>
                     @else
                         <a href="/member/login" > Login </a>
@@ -63,36 +66,47 @@
 
     </div>
 
-    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ URL::asset('/js/app.js') }}"></script>
     <script>
+
+
+
         $(document).ready(function(){
 
-            /** Ajax 添加移除購物車項目 */
-            $("a[active=addCart]").click(function(){
-               let productId = $( this ).attr( "productId" );
-                fetch(`/shop/modifyCart/${ productId }` , { method:"POST" })
-                    .then(()=>{
-                        $(`.shop a[productId=${ productId }]`).attr("active","inCart");
-                    })
-            });
-            
-            $("a[active=inCart]").click(function(){
-                let productId = $(this).attr("productId");
-                let url =  `/shop/modifyCart/${productId}` ;
-                fetch( url ,{ method:"DELETE" })
+            $("a[active]").click( function(){
+
+                let active = $(this).attr("active") ;
+                let productId = $( this ).attr( "productId" ) ;
+                let url = `/shop/modifyCart/${ productId }`   ; 
+                if( active == "inCart" ){
+                    //從購物車移除
+                    fetch( url ,{ method:"DELETE" })
                     .then((res) => res.json() )
                     .then(({ data , total }) => {
-                        console.log( $(this) )
-                        if( $("#shop-cart") ){
+                        if( $("#shop-cart").length > 0 ){
                             $(`div[productId=${ productId }]`).remove();
+                            if(  $(`div[productId=${ productId }]`).length == 0 )
+                            {
+                                alert("購物車已清空");
+                                location.href = "/";
+                            };
                             $("#total").attr("value" , total )    ;
                             $("#total").text( `總計:${ total }` ) ;
                         }else{
-                            $(this).attr("active","addCart");
+                            $(`a[productId=${ productId }]`).attr("active" , "addCart");
+                            $(`a[productId=${ productId }]`).text("加入購物車");
                         };
-
                     });
-                })
+                } else {
+                    //新增至購物車
+                     fetch( url  , { method:"POST" })
+                        .then(()=>{
+                            $(`a[productId=${ productId }]`).attr("active" , "inCart");
+                            $(`a[productId=${ productId }]`).text("已在購物車");
+                        });
+                };
+
+            });
 
         });
     </script>

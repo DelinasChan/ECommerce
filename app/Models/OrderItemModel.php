@@ -9,7 +9,16 @@ class OrderItemModel extends Model
 {
     use HasFactory;
     protected $table = 'orderItem' ;
+    public $timestamps = false;
     protected $fillable = [ 
-        "orderId" , "productId" , "price" , "quant" , 
+        "id" , "orderId" , "productId" , "price" , "quant" , 
     ] ;
+
+    /**
+     *@return Object product
+    */
+    public function product()
+    {
+        return $this->hasOne( "App\Models\ProductModel" , "id" , "productId" ) ;
+    }
 }

@@ -69,7 +69,8 @@ class AWSResult {
         $explodeSrc = explode( "/" , $src ) ;
         $name =  $explodeSrc[ count( $explodeSrc ) -1 ] ;
         /** 新增媒體庫 並記錄用戶Id */
-        $insertMedia = [ "src" => $src , "name" =>$name , "memberId"=>1 ] ;
+        $memberId = session()->get("user")["id"] ;
+        $insertMedia = [ "src" => $src , "name" =>$name , "memberId"=> $memberId ] ;
         $Media = MediaModel::create( $insertMedia );
         return [ "src" => $src , "name" =>$name  , "id" => $Media->id , "alt" => $Media->alt ];
     }

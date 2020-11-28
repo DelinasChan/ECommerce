@@ -30,7 +30,7 @@
                         <a>{{ $product->discountPrice }}</a>
                     </div>
 
-                    <div class="extension" >
+                    <div >
                         <a active="inCart" productId="{{ $product->id }}" >
                             移除
                         </a>
@@ -52,15 +52,19 @@
 
         $( document ).ready(function(){
 
+            if( $("div.product").length == 0 ){
+                alert("當前購物車無商品...");
+                location.href = "/" ;
+                return false ; 
+            };
+
             $("input#quantity").change(function( event ){
                 
                 let price = $(this).attr("price")          ;
                 let productId =  $(this).attr("productId") ;
                 let { value:quantity }= event.target       ;
                 //單價 * 數量
-                console.log( quantity , price , quantity * price  );
-
-                let config = {  method:"POST" , body:JSON.stringify({ quantity:parseInt( quantity ) }) };
+                let config = { method:"POST" , body:JSON.stringify({ quantity:parseInt( quantity ) }) };
                 fetch(`/shop/modifyCart/${productId}` , config )
                     .then(( res ) =>  res.json())
                     .then(( data ) =>{
@@ -77,10 +81,6 @@
 
                     });
 
-            });
-
-            $("a[active=buyNow]").click(function(){
-                console.log("立即購買");
             });
 
         });
