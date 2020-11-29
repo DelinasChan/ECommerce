@@ -30,7 +30,7 @@ class ECPayController extends Controller
         $obj->ServiceURL  = "https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5"; 
         $obj->HashKey     =  config("ecpay.HashKey") ;                                   
         $obj->HashIV      =  config("ecpay.HashIv") ;                                    
-        $obj->MerchantID  =  config("ecpay.MerchantId" );                                
+        $obj->MerchantID  =  config("ecpay.MerchantId" );                     
         $obj->EncryptType = '1';                                                         
         
         //訂單號碼當前時間做 MD5 加密 取前十碼轉大寫
@@ -40,9 +40,9 @@ class ECPayController extends Controller
         $obj->Send['MerchantTradeNo']   = $orderInfo["tradeNo"];                          
         $obj->Send['MerchantTradeDate'] = date('Y/m/d H:i:s');                   
         $obj->Send['TotalAmount']       = $orderInfo["total"];                                      
-        $obj->Send['TradeDesc']         = "good to drink" ;   //產品描述                     
+        $obj->Send['TradeDesc']         = "無" ;   //產品描述 預設無                     
         $obj->Send['ChoosePayment']     = \ECPay_PaymentMethod::ALL ;                 
-
+        
         /** 項目 orderItem  */
         $obj->Send['Items'] = $orderInfo["sendItem"] ;
         $obj->CheckOut();
@@ -52,23 +52,18 @@ class ECPayController extends Controller
     /** 重導向後 客戶看到結果畫面 */
     public function clientResult( Request $request )
     {
-
-        // return "客戶端";
         $data = $request->all();
-        //設定付款結果
-        // $result = $this->cart->setPayResult( $data ) ;
-        // //訂單更新完成 購物車直接建立新的在重導向到首頁
-        // session()->put( "cart" , [] );
-        $message =  $data["RtnCode"] == 1 ? "付款成功" : "付款失敗";
-        return "<script>alert('$message');setTimeout(()=>{ location.href='/' },3000)</script>";
+        session()->put( "cart" , [] );
+        $message =  $data["RtnCode"] == 1 ? "購買完成" : "付款失敗檢查填寫資料是否有誤";
+        return "<script>alert('$message');setTimeout(()=>{ location.href='/' },1500)</script>";
+
     }
 
     /** 綠界回傳資料給伺服器 做後續處理  */
-    public function notifyCallBack( Request $req )
+    public function notifyCallBack( Request $request )
     {
-        // return "客戶端";
-        $data = $request->all();
         //設定付款結果
+        $data = $request->all();
         $result = $this->cart->setPayResult( $data ) ;
     }
 
