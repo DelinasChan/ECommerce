@@ -72,8 +72,11 @@ class CartController extends Controller
         $keys = [] ;
         $total = 0 ;
         //查看購物車
-        foreach( $cart as $key => $product ){
-            array_push( $keys , $key );
+        if( $cart )
+        {
+            foreach( $cart as $key => $product ){
+                array_push( $keys , $key );
+            };    
         };
 
         //如果是刪除 根據 Array 位置 移除 key
