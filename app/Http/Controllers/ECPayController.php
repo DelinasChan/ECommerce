@@ -54,6 +54,12 @@ class ECPayController extends Controller
     {
         $data = $request->all();
         session()->put( "cart" , [] );
+        $Member = $this->cart->getCustomer( $data["MerchantTradeNo"] );
+        session()->put( "user" , [
+            "id" => $Member->id , "fb_id" => $Member->fb_id ,
+            "name" => $Member->username , "photo" => $Member->photo
+        ]);
+        
         $message =  $data["RtnCode"] == 1 ? "購買完成" : "付款失敗檢查填寫資料是否有誤";
         return "<script>alert('$message');setTimeout(()=>{ location.href='/' },1500)</script>";
 

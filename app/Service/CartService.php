@@ -93,4 +93,12 @@ class CartService{
 
     }
 
+    /**
+     * 根據訂單編號 查詢購買者
+     */
+    public function getCustomer( $TradeNo )
+    {
+        return OrderModel::where("id" , "=" , $TradeNo )->first()->member;
+    }
+
 }
