@@ -15,6 +15,11 @@ class OrderModel extends Model
         "id" , "memberId" , "payStatus" , "ecPay_tradeNo" , "createdAt" , 
     ] ;
     
+    public function member()
+    {
+        return $this->hasone("App\Models\MemberModel" , "id" , "memberId" );
+    }
+
     /**
      * @return Array<Item>
      */
