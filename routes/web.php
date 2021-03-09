@@ -12,7 +12,7 @@ use App\Http\Controllers\MemberController ;
 use App\Http\Controllers\CartController ;
 use App\Http\Controllers\DashboardController ;
 
-Route::get("/" ,  [ CartController::class , "products" ]);
+
 Route::get("/product/{productId}" ,  [ CartController::class , "readProduct" ]);
 Route::post("/shop/{productId}" ,  [ CartController::class , "readProduct" ]);
 
