@@ -7,7 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-    <h2>Customer Home</h2>
-    {{$DASHBOARD_PATH}}
+    <h2>Customer Home</h2>    
 </body>
 </html>

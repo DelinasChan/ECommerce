@@ -2,8 +2,13 @@
 
 use Illuminate\Support\Facades\Route;
 
-/**顧客專用路由 */
+use App\Constants\OrderConstant;
 
+/**顧客專用路由 */
 Route::get('',function(){
-    return sortVal();
+    return view('customer.index');
+});
+
+Route::get('test',function(){
+    return OrderConstant::$READY;
 });
