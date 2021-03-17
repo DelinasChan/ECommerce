@@ -4,11 +4,16 @@ use Illuminate\Support\Facades\Route;
 
 use App\Constants\OrderConstant;
 
-/**顧客專用路由 */
-Route::get('',function(){
-    return view('customer.index');
+Route::group(['prefix'=>'api/v1','namespace'=>'User'],function(){
+
+    //訂閱api
+    Route::prefix('subscription')->group(function(){
+        Route::get('store','SubscriptionController@store')->name('api.subscription.store');
+    });
+
 });
 
-Route::get('test',function(){
-    return OrderConstant::$READY;
+/**顧客專用路由 */
+Route::get('home',function(){
+    return view('home');
 });
