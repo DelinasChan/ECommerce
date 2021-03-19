@@ -1,4 +1,4 @@
 {
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css"
+    "/static/dashboard/js/index.js": "/static/dashboard/js/index.js",
+    "/resources/views/dashboard/index.blade.php": "/resources/views/dashboard/index.blade.php"
 }

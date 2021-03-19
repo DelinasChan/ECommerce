@@ -7,6 +7,8 @@ services:
       - ../:/var/www/html/
     expose:
       - 9000
+    depends_on: 
+      - db
   nginx:
     image: nginx
     volumes:
