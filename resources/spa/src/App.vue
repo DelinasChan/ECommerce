@@ -1,20 +1,11 @@
 <template>
-  <div class="dashboard">
-    <h2>SPA後台</h2>
-    <div>
-      Content... Hot Not Working
-    </div>
-  </div>
+    <router-link :to="{name:'store'}">商家</router-link>    
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import router from './routers'
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  },
+  name:"app",
+  router,
 }
 </script>
 

@@ -1,7 +1,9 @@
 import Vue from 'vue'
 import App from './App.vue'
 import common from './common';
+
 Vue.config.productionTip = false
+
 
 let sourceData = [
   {
