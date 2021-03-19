@@ -1,4 +1,5 @@
 {
     "/static/dashboard/js/index.js": "/static/dashboard/js/index.js",
+    "/store.js": "/store.js",
     "/resources/views/dashboard/index.blade.php": "/resources/views/dashboard/index.blade.php"
 }
