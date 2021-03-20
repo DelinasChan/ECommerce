@@ -8,6 +8,9 @@
 </template>
 <script>
 export default {
-    name:"store"
+    name:"store",
+    mounted(){
+        console.log(this.$props);
+    }
 }
 </script>

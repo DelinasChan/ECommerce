@@ -1,11 +1,21 @@
 <template>
-    <router-link :to="{name:'store'}">商家</router-link>    
+  <div id="app" class="spa container">
+    <SideBar />
+    <!-- 第一層 -->
+    <router-view />
+  </div>
 </template>
 <script>
-import router from './routers'
+import SideBar from './components/SideBar';
+
 export default {
   name:"app",
-  router,
+  components:{
+    SideBar
+  },
+  mounted(){
+    console.log('App is mounted...')
+  }
 }
 </script>
 
