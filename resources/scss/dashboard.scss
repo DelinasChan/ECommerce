@@ -1,0 +1,33 @@
+/** 引用通用邏輯 */
+@import "./icon.scss";
+
+/** 共用設定 */
+* {
+    font-family: FangSong;
+}
+body {
+    background: rgb(220 220 220 / 82%) !important;
+    overflow: hidden;
+}
+
+.wrapper {
+    & > div {
+        position: relative;
+    }
+}
+
+a[href],
+a[href]:hover {
+    text-decoration: none;
+    color: none;
+}
+
+li {
+    list-style-type: none;
+}
+
+/** 側邊攔 */
+@import "./sideBar.scss";
+
+/** 右側主要內容 */
+@import "./main.scss";

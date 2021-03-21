@@ -20,9 +20,8 @@ mix.webpackConfig({
     }
 })
 
-
-
 mix.js('resources/spa/src/main.js', 'public/static/dashboard/js/index.js')
+mix.sass('resources/scss/dashboard.scss','public/static/dashboard/css/index.css')
 
 mix.copy('resources/spa/public/index.html', 'resources/views/dashboard/index.blade.php');
 

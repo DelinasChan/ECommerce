@@ -1,0 +1,161 @@
+@charset "UTF-8";
+
+/** 引用通用邏輯 */
+
+.icon {
+  position: relative;
+}
+
+.icon::before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-size: cover;
+}
+
+.icon.i-user::before {
+  background-image: url("/media/dashboard/icon/user.svg");
+}
+
+.icon.i-dashboard::before {
+  background-image: url("/media/dashboard/icon/dashboard.svg");
+}
+
+.icon.i-setting::before {
+  background-image: url("/media/dashboard/icon/setting.svg");
+}
+
+/** 共用設定 */
+
+* {
+  font-family: FangSong;
+}
+
+body {
+  background: rgba(220, 220, 220, 0.82) !important;
+  overflow: hidden;
+}
+
+.wrapper > div {
+  position: relative;
+}
+
+a[href],
+a[href]:hover {
+  text-decoration: none;
+  color: none;
+}
+
+li {
+  list-style-type: none;
+}
+
+/** 側邊攔 */
+
+.sideBar {
+  /** 背景圖片 */
+  background-image: url(/media/dashboard/sideBarbg.jpg);
+  width: 260px;
+  background-size: cover;
+  background-position: center;
+  transition: all 0.5s;
+}
+
+@media (max-width: 1200px) {
+  .sideBar {
+    transform: translateX(-105%);
+  }
+}
+
+.sideBar a {
+  color: #fff !important;
+  font-size: 20px;
+  display: block;
+  max-width: 220px;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 2;
+  background-color: transparent;
+  transition: background-color 0.6s;
+}
+
+.sideBar::before {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.85;
+  background: #000;
+  z-index: -1;
+}
+
+.sideBar > div {
+  padding: 0 0 15px 0;
+}
+
+.sideBar > div:not(.title) a {
+  line-height: 3.2;
+  font-size: 15px;
+  text-align: left;
+  padding-left: 50px;
+}
+
+.sideBar > div.profile a {
+  border-top: 1px solid rgba(146, 144, 144, 0.377);
+  border-bottom: 1px solid rgba(146, 144, 144, 0.377);
+  line-height: 4.2;
+}
+
+.sideBar > div.profile a.icon::before {
+  border-radius: 80%;
+  background-size: contain;
+}
+
+.sideBar > div.title {
+  margin: 25px 0 0 0;
+}
+
+.sideBar .link-list ul {
+  margin: 10px 0 0 0;
+}
+
+.sideBar .link-list li {
+  display: block;
+  margin: 5px 0 10px 0;
+}
+
+.sideBar .link-list li a {
+  border-radius: 3px;
+  font-weight: 600;
+  letter-spacing: 1px;
+}
+
+.sideBar .link-list li a:hover {
+  background-color: rgba(196, 196, 196, 0.26);
+}
+
+.sideBar .link-list li a.active {
+  box-shadow: 0 12px 20px -10px rgba(0, 172, 193, 0.28), 0 4px 20px 0 rgba(0, 0, 0, 0.12), 0 7px 8px -5px rgba(0, 172, 193, 0.2);
+  background-color: #0da2b6;
+}
+
+/** 右側主要內容 */
+
+.main {
+  overflow: auto;
+}
+
+@media (min-width: 1200px) {
+  .main {
+    width: calc(100% - 285px);
+    float: right;
+  }
+}
+

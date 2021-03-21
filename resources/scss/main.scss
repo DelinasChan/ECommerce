@@ -1,0 +1,8 @@
+.main {
+    @media (min-width: 1200px) {
+        width: calc(100% - 285px);
+        float: right;
+    }
+
+    overflow: auto;
+}

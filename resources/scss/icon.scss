@@ -1,0 +1,27 @@
+.icon {
+    position: relative;
+
+    &::before {
+        content: "";
+        display: block;
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background-size: cover;
+    }
+
+    &.i-user::before {
+        background-image: url("/media/dashboard/icon/user.svg");
+    }
+
+    &.i-dashboard::before {
+        background-image: url("/media/dashboard/icon/dashboard.svg");
+    }
+
+    &.i-setting::before {
+        background-image: url("/media/dashboard/icon/setting.svg");
+    }
+}

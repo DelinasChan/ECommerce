@@ -1,5 +1,5 @@
 export default {
     name:"product",
     path:"product",
-    component:()=>import(/* webpackChunkName: "Product" */ '@/views/Product')     
+    component:()=>import(/* webpackChunkName: "static/dashboard/chunk/product" */ '@/views/Product')     
 }

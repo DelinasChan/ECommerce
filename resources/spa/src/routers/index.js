@@ -20,15 +20,15 @@ Vue.use(VueRouter);
  * 
  * @returns {Array.<{path:string,name:string}>} 
 */
-let routesSprea = ({ routes , defaultPath , firstName }) => {
+let routesSprea = ({ routes , defaultPath , firstName = '' }) => {
     let data = routes.map(({ path = '' , ...options })=>{
         const pathMap =['/dashboard',defaultPath];
-        if(!options.props)options.props = {};
+        if(!options.data)options.data = {};
         if(path)pathMap.push(path);
         
         //設定麵包屑
         let { laterNames = [] } = options.props ; 
-        options.props.breadcrumbs = [firstName,...laterNames].join('/');
+        options.data.breadcrumbs = [firstName,...laterNames].join('/');
         return  {
             path:pathMap.join('/'),
             ...options
@@ -40,6 +40,18 @@ let routesSprea = ({ routes , defaultPath , firstName }) => {
 export default new VueRouter({
     mode:'history',
     routes:[
+        {
+            path:'/dashboard',
+            name:'dashboard',
+            label:'首頁',
+            icon:'icon i-dashboard',
+            meta:[
+                {
+                    'name':'後臺首頁'
+                }
+            ],
+            component:()=>  import(/* webpackChunkName: 'static/dashboard/chunk/dashboard' */ '@/views/dashboard')
+        },
         ...routesSprea(StoreRouter),
     ]
 })

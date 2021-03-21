@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"store":"store"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"static/dashboard/chunk/dashboard":"static/dashboard/chunk/dashboard","static/dashboard/chunk/store":"static/dashboard/chunk/store"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -211,6 +211,10 @@
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_SideBar__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/SideBar */ "./resources/spa/src/components/SideBar.vue");
+/* harmony import */ var _components_BreadCrumbs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/BreadCrumbs */ "./resources/spa/src/components/BreadCrumbs.vue");
+//
+//
+//
 //
 //
 //
@@ -219,13 +223,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "app",
   components: {
-    SideBar: _components_SideBar__WEBPACK_IMPORTED_MODULE_0__["default"]
+    SideBar: _components_SideBar__WEBPACK_IMPORTED_MODULE_0__["default"],
+    BreadCrumbs: _components_BreadCrumbs__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   mounted: function mounted() {
-    console.log('App is mounted...');
+    console.log("App is mounted...");
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/spa/src/components/BreadCrumbs.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/spa/src/components/BreadCrumbs.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "Breadcrumbs",
+  data: function data() {
+    return {
+      breadcrumbs: []
+    };
+  },
+  watch: {
+    $route: function $route() {
+      console.log("Crumbs", this.$route);
+    }
   }
 });
 
@@ -252,8 +286,30 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "SideBar"
+  name: "SideBar",
+  data: function data() {
+    return {
+      routes: []
+    };
+  },
+  mounted: function mounted() {
+    this.routes = this.$router.options.routes;
+    console.log(this.routes);
+  }
 });
 
 /***/ }),
@@ -743,10 +799,43 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "spa container", attrs: { id: "app" } },
-    [_c("SideBar"), _vm._v(" "), _c("router-view")],
+    { staticClass: "vh-100", attrs: { id: "wrapper" } },
+    [
+      _c("SideBar"),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "main vh-100" },
+        [_c("BreadCrumbs"), _vm._v(" "), _c("router-view")],
+        1
+      )
+    ],
     1
   )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/spa/src/components/BreadCrumbs.vue?vue&type=template&id=79036a65&":
+/*!*******************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/spa/src/components/BreadCrumbs.vue?vue&type=template&id=79036a65& ***!
+  \*******************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "breadcrumbs" }, [_vm._v(" ")])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -770,29 +859,70 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("ul", [
-    _c(
-      "li",
-      [
-        _c("router-link", { attrs: { to: { name: "storeList" } } }, [
-          _vm._v("Store")
-        ])
-      ],
-      1
-    ),
-    _vm._v(" "),
-    _c(
-      "li",
-      [
-        _c("router-link", { attrs: { to: { name: "editStore" } } }, [
-          _vm._v("\n            EditStore\n        ")
-        ])
-      ],
-      1
-    )
-  ])
+  return _c(
+    "div",
+    { staticClass: "sideBar position-fixed vh-100 d-flex flex-column" },
+    [
+      _c(
+        "div",
+        { staticClass: "title" },
+        [
+          _c("router-link", { attrs: { to: { name: "dashboard" } } }, [
+            _vm._v(" 商家管理後台 ")
+          ])
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "link-list" }, [
+        _c(
+          "ul",
+          { staticClass: "p-0" },
+          _vm._l(_vm.routes, function(route, index) {
+            var _obj
+            return _c(
+              "li",
+              { key: index },
+              [
+                _c(
+                  "router-link",
+                  {
+                    class:
+                      ((_obj = { active: route.name == _vm.$route.name }),
+                      (_obj[route.icon] = true),
+                      _obj),
+                    attrs: { to: { name: route.name } }
+                  },
+                  [
+                    _vm._v(
+                      "\n          " +
+                        _vm._s(route.label || "分頁") +
+                        "\n        "
+                    )
+                  ]
+                )
+              ],
+              1
+            )
+          }),
+          0
+        )
+      ])
+    ]
+  )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "profile" }, [
+      _c("a", { staticClass: "user-name icon i-user" }, [_vm._v("用戶姓名")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -939,6 +1069,17 @@ try {
 
 module.exports = g;
 
+
+/***/ }),
+
+/***/ "./resources/scss/dashboard.scss":
+/*!***************************************!*\
+  !*** ./resources/scss/dashboard.scss ***!
+  \***************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ }),
 
@@ -16193,6 +16334,75 @@ var resource = [{
 
 /***/ }),
 
+/***/ "./resources/spa/src/components/BreadCrumbs.vue":
+/*!******************************************************!*\
+  !*** ./resources/spa/src/components/BreadCrumbs.vue ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BreadCrumbs_vue_vue_type_template_id_79036a65___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BreadCrumbs.vue?vue&type=template&id=79036a65& */ "./resources/spa/src/components/BreadCrumbs.vue?vue&type=template&id=79036a65&");
+/* harmony import */ var _BreadCrumbs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./BreadCrumbs.vue?vue&type=script&lang=js& */ "./resources/spa/src/components/BreadCrumbs.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _BreadCrumbs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _BreadCrumbs_vue_vue_type_template_id_79036a65___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _BreadCrumbs_vue_vue_type_template_id_79036a65___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/spa/src/components/BreadCrumbs.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/spa/src/components/BreadCrumbs.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************!*\
+  !*** ./resources/spa/src/components/BreadCrumbs.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BreadCrumbs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./BreadCrumbs.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/spa/src/components/BreadCrumbs.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_BreadCrumbs_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/spa/src/components/BreadCrumbs.vue?vue&type=template&id=79036a65&":
+/*!*************************************************************************************!*\
+  !*** ./resources/spa/src/components/BreadCrumbs.vue?vue&type=template&id=79036a65& ***!
+  \*************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BreadCrumbs_vue_vue_type_template_id_79036a65___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./BreadCrumbs.vue?vue&type=template&id=79036a65& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/spa/src/components/BreadCrumbs.vue?vue&type=template&id=79036a65&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BreadCrumbs_vue_vue_type_template_id_79036a65___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_BreadCrumbs_vue_vue_type_template_id_79036a65___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/spa/src/components/SideBar.vue":
 /*!**************************************************!*\
   !*** ./resources/spa/src/components/SideBar.vue ***!
@@ -16283,7 +16493,7 @@ __webpack_require__.r(__webpack_exports__);
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
 var resource = [{
   source: 'css',
-  url: 'https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css'
+  url: 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
 }];
 _common__WEBPACK_IMPORTED_MODULE_2__["default"].loadResource(resource);
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
@@ -16353,19 +16563,20 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 var routesSprea = function routesSprea(_ref) {
   var routes = _ref.routes,
       defaultPath = _ref.defaultPath,
-      firstName = _ref.firstName;
+      _ref$firstName = _ref.firstName,
+      firstName = _ref$firstName === void 0 ? '' : _ref$firstName;
   var data = routes.map(function (_ref2) {
     var _ref2$path = _ref2.path,
         path = _ref2$path === void 0 ? '' : _ref2$path,
         options = _objectWithoutProperties(_ref2, ["path"]);
 
     var pathMap = ['/dashboard', defaultPath];
-    if (!options.props) options.props = {};
+    if (!options.data) options.data = {};
     if (path) pathMap.push(path); //設定麵包屑
 
     var _options$props$laterN = options.props.laterNames,
         laterNames = _options$props$laterN === void 0 ? [] : _options$props$laterN;
-    options.props.breadcrumbs = [firstName].concat(_toConsumableArray(laterNames)).join('/');
+    options.data.breadcrumbs = [firstName].concat(_toConsumableArray(laterNames)).join('/');
     return _objectSpread({
       path: pathMap.join('/')
     }, options);
@@ -16375,7 +16586,18 @@ var routesSprea = function routesSprea(_ref) {
 
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   mode: 'history',
-  routes: _toConsumableArray(routesSprea(_storeRouter__WEBPACK_IMPORTED_MODULE_2__["default"]))
+  routes: [{
+    path: '/dashboard',
+    name: 'dashboard',
+    label: '首頁',
+    icon: 'icon i-dashboard',
+    meta: [{
+      'name': '後臺首頁'
+    }],
+    component: function component() {
+      return __webpack_require__.e(/*! import() | static/dashboard/chunk/dashboard */ "static/dashboard/chunk/dashboard").then(__webpack_require__.bind(null, /*! @/views/dashboard */ "./resources/spa/src/views/dashboard.vue"));
+    }
+  }].concat(_toConsumableArray(routesSprea(_storeRouter__WEBPACK_IMPORTED_MODULE_2__["default"])))
 }));
 
 /***/ }),
@@ -16394,23 +16616,15 @@ __webpack_require__.r(__webpack_exports__);
   defaultPath: "store",
   firstName: "商家管理",
   routes: [{
+    path: 'editStore',
     name: 'storeList',
+    icon: 'icon i-setting',
+    label: '店家管理',
     component: function component() {
-      return __webpack_require__.e(/*! import() | store */ "store").then(__webpack_require__.bind(null, /*! @/views/store */ "./resources/spa/src/views/store/index.vue"));
+      return __webpack_require__.e(/*! import() | static/dashboard/chunk/store */ "static/dashboard/chunk/store").then(__webpack_require__.bind(null, /*! @/views/store */ "./resources/spa/src/views/store/index.vue"));
     },
     props: {
       laterNames: ['店家設定', 'XX的店家列表']
-    }
-  }, {
-    path: 'editStore',
-    name: 'editStore',
-    component: {
-      render: function render(h) {
-        return h = h('div', '<a>更新商家</a>');
-      }
-    },
-    props: {
-      laterNames: ['店家設定', 'XX的店']
     }
   }]
 });
@@ -16418,13 +16632,14 @@ __webpack_require__.r(__webpack_exports__);
 /***/ }),
 
 /***/ 0:
-/*!*****************************************!*\
-  !*** multi ./resources/spa/src/main.js ***!
-  \*****************************************/
+/*!*************************************************************************!*\
+  !*** multi ./resources/spa/src/main.js ./resources/scss/dashboard.scss ***!
+  \*************************************************************************/
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! W:\php_Project\eCommerce\resources\spa\src\main.js */"./resources/spa/src/main.js");
+__webpack_require__(/*! W:\php_Project\eCommerce\resources\spa\src\main.js */"./resources/spa/src/main.js");
+module.exports = __webpack_require__(/*! W:\php_Project\eCommerce\resources\scss\dashboard.scss */"./resources/scss/dashboard.scss");
 
 
 /***/ })
