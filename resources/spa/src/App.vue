@@ -2,9 +2,13 @@
   <div id="wrapper" class="vh-100">
     <SideBar />
     <!-- 主要內容 -->
-    <div class="main vh-100">
+    <div class="main vh-100 d-flex flex-column">
+      <!-- 麵包屑-->
       <BreadCrumbs />
-      <router-view />
+      <!-- 渲染畫面-->
+      <div class="render">
+        <router-view />
+      </div>
     </div>
   </div>
 </template>
@@ -26,7 +30,6 @@ export default {
       let { siteName = "" } = this.$baseSetting;
       let { title = "" } = this.$route.meta;
       document.title = `${siteName} ${title && " | " + title} `;
-      console.log(this.$route);
     },
   },
 };

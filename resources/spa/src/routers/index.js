@@ -6,7 +6,6 @@ import ProductRouter from './productRouter';
 import OrderRouter from './orderRouter';
 
 Vue.use(VueRouter);
-
 /**
  * RouterObject type definition
  * @typedef  {Object} RouterObject - 路由物件

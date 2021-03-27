@@ -1,4 +1,28 @@
 .main {
+    justify-content: space-around;
+
+    // 麵包屑
+    & > nav {
+        flex-basis: 5%;
+
+        ol.breadcrumb {
+            background-color: transparent;
+        }
+        li.breadcrumb-item:not(.active) a {
+            color: black;
+        }
+    }
+
+    //主要內容區塊
+    & > .render {
+        flex-basis: 80%;
+        & > div {
+            height: 100%;
+            width: 80%;
+            margin: 0 auto;
+        }
+    }
+
     @media (min-width: 1200px) {
         width: calc(100% - 285px);
         float: right;

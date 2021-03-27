@@ -1,6 +1,6 @@
 <template>
-  <nav aria-label="breadcrumb" v-if="$route.meta.breadcrumbs">
-    <ol class="breadcrumb">
+  <nav aria-label="breadcrumb" v-if="$route.meta.breadcrumbs" class="d-flex">
+    <ol class="breadcrumb align-items-center">
       <li
         class="breadcrumb-item"
         :key="index"

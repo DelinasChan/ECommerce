@@ -157,7 +157,30 @@ li {
 /** 右側主要內容 */
 
 .main {
+  justify-content: space-around;
   overflow: auto;
+}
+
+.main > nav {
+  flex-basis: 5%;
+}
+
+.main > nav ol.breadcrumb {
+  background-color: transparent;
+}
+
+.main > nav li.breadcrumb-item:not(.active) a {
+  color: black;
+}
+
+.main > .render {
+  flex-basis: 80%;
+}
+
+.main > .render > div {
+  height: 100%;
+  width: 80%;
+  margin: 0 auto;
 }
 
 @media (min-width: 1200px) {
