@@ -15,13 +15,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "store",
-  mounted: function mounted() {
-    console.log(this.$props);
-  }
+  name: "EditStore"
 });
 
 /***/ }),
@@ -51,7 +46,7 @@ var staticRenderFns = [
     return _c("div", [
       _c("h2", [_vm._v("商家管理")]),
       _vm._v(" "),
-      _c("p", [_vm._v("\n        商家管理的內容\n    ")])
+      _c("p", [_vm._v("商家管理的內容")])
     ])
   }
 ]

@@ -3,5 +3,8 @@
     "/static/dashboard/css/index.css": "/static/dashboard/css/index.css",
     "/static/dashboard/chunk/dashboard.js": "/static/dashboard/chunk/dashboard.js",
     "/static/dashboard/chunk/store.js": "/static/dashboard/chunk/store.js",
-    "/resources/views/dashboard/index.blade.php": "/resources/views/dashboard/index.blade.php"
+    "/resources/views/dashboard/index.blade.php": "/resources/views/dashboard/index.blade.php",
+    "/static/dashboard/chunk/product.js": "/static/dashboard/chunk/product.js",
+    "/static/dashboard/chunk/EditProductForm.js": "/static/dashboard/chunk/EditProductForm.js",
+    "/static/dashboard/chunk/OrderList.js": "/static/dashboard/chunk/OrderList.js"
 }

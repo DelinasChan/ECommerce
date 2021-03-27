@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"static/dashboard/chunk/dashboard":"static/dashboard/chunk/dashboard","static/dashboard/chunk/store":"static/dashboard/chunk/store"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"static/dashboard/chunk/EditProductForm":"static/dashboard/chunk/EditProductForm","static/dashboard/chunk/OrderList":"static/dashboard/chunk/OrderList","static/dashboard/chunk/dashboard":"static/dashboard/chunk/dashboard","static/dashboard/chunk/product":"static/dashboard/chunk/product","static/dashboard/chunk/store":"static/dashboard/chunk/store"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -232,6 +232,16 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     console.log("App is mounted...");
+  },
+  watch: {
+    $route: function $route() {
+      var _this$$baseSetting$si = this.$baseSetting.siteName,
+          siteName = _this$$baseSetting$si === void 0 ? "" : _this$$baseSetting$si;
+      var _this$$route$meta$tit = this.$route.meta.title,
+          title = _this$$route$meta$tit === void 0 ? "" : _this$$route$meta$tit;
+      document.title = "".concat(siteName, " ").concat(title && " | " + title, " ");
+      console.log(this.$route);
+    }
   }
 });
 
@@ -249,18 +259,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  name: "Breadcrumbs",
-  data: function data() {
-    return {
-      breadcrumbs: []
-    };
-  },
-  watch: {
-    $route: function $route() {
-      console.log("Crumbs", this.$route);
-    }
-  }
+  name: "Breadcrumbs"
 });
 
 /***/ }),
@@ -299,16 +311,34 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SideBar",
   data: function data() {
     return {
-      routes: []
+      routes: [],
+      currentRoute: {}
     };
   },
-  mounted: function mounted() {
-    this.routes = this.$router.options.routes;
-    console.log(this.routes);
+  watch: {
+    $route: function $route() {
+      var _this = this;
+
+      var currentRoute = this.$router.options.routes.find(function (_ref) {
+        var name = _ref.name;
+        return name == _this.$route.name;
+      });
+      this.currentRoute = currentRoute.firstRoute || currentRoute;
+      this.routes = this.$router.options.routes.filter(function (_ref2) {
+        var path = _ref2.path;
+        return path.split("/").length <= 3;
+      });
+    }
   }
 });
 
@@ -835,7 +865,32 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "breadcrumbs" }, [_vm._v(" ")])
+  return _vm.$route.meta.breadcrumbs
+    ? _c("nav", { attrs: { "aria-label": "breadcrumb" } }, [
+        _c(
+          "ol",
+          { staticClass: "breadcrumb" },
+          _vm._l(_vm.$route.meta.breadcrumbs, function(label, index) {
+            return _c(
+              "li",
+              {
+                key: index,
+                staticClass: "breadcrumb-item",
+                class: {
+                  active: index + 1 === _vm.$route.meta.breadcrumbs.length
+                },
+                attrs: {
+                  "aria-current":
+                    index + 1 === _vm.$route.meta.breadcrumbs.length && "page"
+                }
+              },
+              [_c("a", { attrs: { href: "#" } }, [_vm._v(_vm._s(label))])]
+            )
+          }),
+          0
+        )
+      ])
+    : _vm._e()
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -890,10 +945,17 @@ var render = function() {
                   "router-link",
                   {
                     class:
-                      ((_obj = { active: route.name == _vm.$route.name }),
+                      ((_obj = {
+                        active: route.name == _vm.currentRoute.name
+                      }),
                       (_obj[route.icon] = true),
                       _obj),
-                    attrs: { to: { name: route.name } }
+                    attrs: {
+                      to: {
+                        name: route.name,
+                        params: { prodcut: { id: 1, name: "產品名稱" } }
+                      }
+                    }
                   },
                   [
                     _vm._v(
@@ -16490,12 +16552,20 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false;
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.config.productionTip = false; //基礎設定
+
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.prototype.$baseSetting = {
+  siteName: '後臺' //網站名稱
+
+};
 var resource = [{
   source: 'css',
   url: 'https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css'
 }];
 _common__WEBPACK_IMPORTED_MODULE_2__["default"].loadResource(resource);
+_routers__WEBPACK_IMPORTED_MODULE_3__["default"].beforeEach(function (to, from, next) {
+  next();
+});
 new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   router: _routers__WEBPACK_IMPORTED_MODULE_3__["default"],
   render: function render(h) {
@@ -16518,6 +16588,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./resources/spa/node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _storeRouter__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./storeRouter */ "./resources/spa/src/routers/storeRouter.js");
+/* harmony import */ var _productRouter__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./productRouter */ "./resources/spa/src/routers/productRouter.js");
+/* harmony import */ var _orderRouter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./orderRouter */ "./resources/spa/src/routers/orderRouter.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -16539,6 +16611,8 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _objectWithoutProperties(source, excluded) { if (source == null) return {}; var target = _objectWithoutPropertiesLoose(source, excluded); var key, i; if (Object.getOwnPropertySymbols) { var sourceSymbolKeys = Object.getOwnPropertySymbols(source); for (i = 0; i < sourceSymbolKeys.length; i++) { key = sourceSymbolKeys[i]; if (excluded.indexOf(key) >= 0) continue; if (!Object.prototype.propertyIsEnumerable.call(source, key)) continue; target[key] = source[key]; } } return target; }
 
 function _objectWithoutPropertiesLoose(source, excluded) { if (source == null) return {}; var target = {}; var sourceKeys = Object.keys(source); var key, i; for (i = 0; i < sourceKeys.length; i++) { key = sourceKeys[i]; if (excluded.indexOf(key) >= 0) continue; target[key] = source[key]; } return target; }
+
+
 
 
 
@@ -16565,21 +16639,35 @@ var routesSprea = function routesSprea(_ref) {
       defaultPath = _ref.defaultPath,
       _ref$firstName = _ref.firstName,
       firstName = _ref$firstName === void 0 ? '' : _ref$firstName;
-  var data = routes.map(function (_ref2) {
-    var _ref2$path = _ref2.path,
-        path = _ref2$path === void 0 ? '' : _ref2$path,
-        options = _objectWithoutProperties(_ref2, ["path"]);
+  //先找到最上層路由
+  var firstRoute = routes.find(function (_ref2) {
+    var path = _ref2.path;
+    return path === '';
+  });
+  var data = routes.map(function (_ref3) {
+    var _ref3$path = _ref3.path,
+        path = _ref3$path === void 0 ? '' : _ref3$path,
+        options = _objectWithoutProperties(_ref3, ["path"]);
 
     var pathMap = ['/dashboard', defaultPath];
     if (!options.data) options.data = {};
-    if (path) pathMap.push(path); //設定麵包屑
+    if (path.length > 0) pathMap.push(path); //設定麵包屑
 
     var _options$props$laterN = options.props.laterNames,
         laterNames = _options$props$laterN === void 0 ? [] : _options$props$laterN;
-    options.data.breadcrumbs = [firstName].concat(_toConsumableArray(laterNames)).join('/');
-    return _objectSpread({
+    options.meta.breadcrumbs = [firstName].concat(_toConsumableArray(laterNames));
+
+    var routeSetting = _objectSpread({
       path: pathMap.join('/')
     }, options);
+
+    if (path !== '') {
+      Object.assign(routeSetting, {
+        firstRoute: firstRoute
+      });
+    }
+
+    return routeSetting;
   });
   return data;
 };
@@ -16591,14 +16679,93 @@ var routesSprea = function routesSprea(_ref) {
     name: 'dashboard',
     label: '首頁',
     icon: 'icon i-dashboard',
-    meta: [{
-      'name': '後臺首頁'
-    }],
+    meta: {
+      title: '首頁'
+    },
+    props: {
+      laterNames: []
+    },
     component: function component() {
       return __webpack_require__.e(/*! import() | static/dashboard/chunk/dashboard */ "static/dashboard/chunk/dashboard").then(__webpack_require__.bind(null, /*! @/views/dashboard */ "./resources/spa/src/views/dashboard.vue"));
     }
-  }].concat(_toConsumableArray(routesSprea(_storeRouter__WEBPACK_IMPORTED_MODULE_2__["default"])))
+  }].concat(_toConsumableArray(routesSprea(_storeRouter__WEBPACK_IMPORTED_MODULE_2__["default"])), _toConsumableArray(routesSprea(_productRouter__WEBPACK_IMPORTED_MODULE_3__["default"])), _toConsumableArray(routesSprea(_orderRouter__WEBPACK_IMPORTED_MODULE_4__["default"])))
 }));
+
+/***/ }),
+
+/***/ "./resources/spa/src/routers/orderRouter.js":
+/*!**************************************************!*\
+  !*** ./resources/spa/src/routers/orderRouter.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//商家相關路由
+/* harmony default export */ __webpack_exports__["default"] = ({
+  defaultPath: "orders",
+  firstName: "訂單列表",
+  routes: [{
+    path: '',
+    name: 'OrderList',
+    icon: 'icon i-checklist',
+    label: '訂單列表',
+    meta: {
+      title: '訂單列表'
+    },
+    component: function component() {
+      return __webpack_require__.e(/*! import() | static/dashboard/chunk/OrderList */ "static/dashboard/chunk/OrderList").then(__webpack_require__.bind(null, /*! @/views/order */ "./resources/spa/src/views/order/index.vue"));
+    },
+    props: {
+      laterNames: []
+    }
+  }]
+});
+
+/***/ }),
+
+/***/ "./resources/spa/src/routers/productRouter.js":
+/*!****************************************************!*\
+  !*** ./resources/spa/src/routers/productRouter.js ***!
+  \****************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  defaultPath: "products",
+  firstName: "商品列表",
+  routes: [{
+    path: '',
+    name: 'ProductList',
+    icon: 'icon i-goods',
+    label: '商品列表',
+    component: function component() {
+      return __webpack_require__.e(/*! import() | static/dashboard/chunk/product */ "static/dashboard/chunk/product").then(__webpack_require__.bind(null, /*! @/views/Product */ "./resources/spa/src/views/Product/index.vue"));
+    },
+    meta: {
+      title: '商品列表'
+    },
+    props: {
+      laterNames: []
+    }
+  }, {
+    path: 'edit/:id',
+    name: 'EditProduct',
+    label: '商品設定',
+    meta: {
+      title: '商品設定'
+    },
+    component: function component() {
+      return __webpack_require__.e(/*! import() | static/dashboard/chunk/EditProductForm */ "static/dashboard/chunk/EditProductForm").then(__webpack_require__.bind(null, /*! @/views/product/EditProductForm */ "./resources/spa/src/views/product/EditProductForm.vue"));
+    },
+    props: {
+      laterNames: ['商品設定']
+    }
+  }]
+});
 
 /***/ }),
 
@@ -16613,13 +16780,16 @@ var routesSprea = function routesSprea(_ref) {
 __webpack_require__.r(__webpack_exports__);
 //商家相關路由
 /* harmony default export */ __webpack_exports__["default"] = ({
-  defaultPath: "store",
-  firstName: "商家管理",
+  defaultPath: "editStore",
+  firstName: "店家管理",
   routes: [{
-    path: 'editStore',
-    name: 'storeList',
+    path: '',
+    name: 'EditStore',
     icon: 'icon i-setting',
-    label: '店家管理',
+    label: '店家基礎設定',
+    meta: {
+      title: '店家基礎設定'
+    },
     component: function component() {
       return __webpack_require__.e(/*! import() | static/dashboard/chunk/store */ "static/dashboard/chunk/store").then(__webpack_require__.bind(null, /*! @/views/store */ "./resources/spa/src/views/store/index.vue"));
     },

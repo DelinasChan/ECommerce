@@ -13,8 +13,14 @@
       <ul class="p-0">
         <li v-for="(route, index) in routes" :key="index">
           <router-link
-            :to="{ name: route.name }"
-            :class="{ active: route.name == $route.name, [route.icon]: true }"
+            :to="{
+              name: route.name,
+              params: { prodcut: { id: 1, name: '產品名稱' } },
+            }"
+            :class="{
+              active: route.name == currentRoute.name,
+              [route.icon]: true,
+            }"
           >
             {{ route.label || "分頁" }}
           </router-link>
@@ -29,11 +35,19 @@ export default {
   data: () => {
     return {
       routes: [],
+      currentRoute: {},
     };
   },
-  mounted() {
-    this.routes = this.$router.options.routes;
-    console.log(this.routes);
+  watch: {
+    $route() {
+      let currentRoute = this.$router.options.routes.find(
+        ({ name }) => name == this.$route.name
+      );
+      this.currentRoute = currentRoute.firstRoute || currentRoute;
+      this.routes = this.$router.options.routes.filter(
+        ({ path }) => path.split("/").length <= 3
+      );
+    },
   },
 };
 </script>

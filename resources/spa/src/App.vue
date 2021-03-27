@@ -21,6 +21,14 @@ export default {
   mounted() {
     console.log("App is mounted...");
   },
+  watch: {
+    $route() {
+      let { siteName = "" } = this.$baseSetting;
+      let { title = "" } = this.$route.meta;
+      document.title = `${siteName} ${title && " | " + title} `;
+      console.log(this.$route);
+    },
+  },
 };
 </script>
 

@@ -2,6 +2,8 @@ import VueRouter from 'vue-router';
 import Vue from 'vue';
 
 import StoreRouter from './storeRouter';
+import ProductRouter from './productRouter';
+import OrderRouter from './orderRouter';
 
 Vue.use(VueRouter);
 
@@ -21,18 +23,24 @@ Vue.use(VueRouter);
  * @returns {Array.<{path:string,name:string}>} 
 */
 let routesSprea = ({ routes , defaultPath , firstName = '' }) => {
+
+    //先找到最上層路由
+    let firstRoute = routes.find(({ path }) => path === '');
     let data = routes.map(({ path = '' , ...options })=>{
         const pathMap =['/dashboard',defaultPath];
-        if(!options.data)options.data = {};
-        if(path)pathMap.push(path);
-        
+        if(!options.data) options.data = {};
+        if(path.length > 0) pathMap.push(path) ;
+
         //設定麵包屑
         let { laterNames = [] } = options.props ; 
-        options.data.breadcrumbs = [firstName,...laterNames].join('/');
-        return  {
-            path:pathMap.join('/'),
-            ...options
-        };
+        options.meta.breadcrumbs = [firstName,...laterNames];
+        let routeSetting = { path:pathMap.join('/'), ...options } ;
+        if( path !== '' )
+        {
+            Object.assign(routeSetting,{ firstRoute })
+        }
+        
+        return routeSetting ;
     });
     return data ;
 };
@@ -45,13 +53,16 @@ export default new VueRouter({
             name:'dashboard',
             label:'首頁',
             icon:'icon i-dashboard',
-            meta:[
-                {
-                    'name':'後臺首頁'
-                }
-            ],
+            meta:{
+                title:'首頁'
+            },
+            props:{
+                laterNames:[]
+            },
             component:()=>  import(/* webpackChunkName: 'static/dashboard/chunk/dashboard' */ '@/views/dashboard')
         },
         ...routesSprea(StoreRouter),
+        ...routesSprea(ProductRouter),
+        ...routesSprea(OrderRouter),
     ]
 })

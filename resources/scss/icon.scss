@@ -24,4 +24,12 @@
     &.i-setting::before {
         background-image: url("/media/dashboard/icon/setting.svg");
     }
+
+    &.i-goods::before {
+        background-image: url("/media/dashboard/icon/goods.svg");
+    }
+
+    &.i-checklist::before {
+        background-image: url("/media/dashboard/icon/checklist.svg");
+    }
 }

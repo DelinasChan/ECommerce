@@ -30,6 +30,14 @@
   background-image: url("/media/dashboard/icon/setting.svg");
 }
 
+.icon.i-goods::before {
+  background-image: url("/media/dashboard/icon/goods.svg");
+}
+
+.icon.i-checklist::before {
+  background-image: url("/media/dashboard/icon/checklist.svg");
+}
+
 /** 共用設定 */
 
 * {

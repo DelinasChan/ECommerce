@@ -5,6 +5,11 @@ import router from './routers';
 
 Vue.config.productionTip = false;
 
+//基礎設定
+Vue.prototype.$baseSetting = {
+  siteName:'後臺' //網站名稱
+};
+
 let resource = [
   {
     source:'css',
@@ -14,7 +19,13 @@ let resource = [
 
 common.loadResource(resource);
 
+router.beforeEach((to, from, next) => {
+
+  
+  next();
+});
+
 new Vue({
   router,
   render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');
