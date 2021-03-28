@@ -3,26 +3,21 @@
     <h2>商家管理</h2>
     <p>商家管理的內容</p>
     <ValidationObserver ref="form">
-      <div>
-        <ValidationProvider
-          v-slot="{ failed, errors }"
-          name="password"
-          rules="required"
-        >
-          <input name="password" v-model="password" />
-          <span v-if="failed">{{ errors[0] }}</span>
-        </ValidationProvider>
-      </div>
-      <div>
-        <ValidationProvider
-          v-slot="{ failed, errors }"
-          name="account"
-          rules="required"
-        >
-          <input v-model="account" />
-          <span v-if="failed">{{ errors[0] }}</span>
-        </ValidationProvider>
-      </div>
+      <ValidInput
+        :modal="fields.password"
+        :fields.sync="fields.password"
+        fieldName="fields"
+        label="用戶密碼"
+        rules="required"
+      />
+
+      <ValidInput
+        :modal="fields.username"
+        :fields.sync="fields.username"
+        fieldName="fields"
+        label="用戶姓名"
+        rules="required"
+      />
     </ValidationObserver>
     <a @click="submit()">送出</a>
   </div>
@@ -30,14 +25,22 @@
 <script>
 export default {
   name: "EditStore",
-  mounted() {
-    console.log(this.$refs);
-  },
+  mixins: [],
   data() {
     return {
-      password: "",
-      account: "",
+      fields: {
+        password: "",
+        username: "",
+      },
     };
+  },
+  watch: {
+    "fields.username"(value) {
+      console.log("username", value);
+    },
+    "fields.password"(value) {
+      console.log("password", value);
+    },
   },
   methods: {
     async submit() {

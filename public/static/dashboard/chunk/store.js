@@ -41,21 +41,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "EditStore",
-  mounted: function mounted() {
-    console.log(this.$refs);
-  },
+  mixins: [],
   data: function data() {
     return {
-      password: "",
-      account: ""
+      fields: {
+        password: "",
+        username: ""
+      }
     };
+  },
+  watch: {
+    "fields.username": function fieldsUsername(value) {
+      console.log("username", value);
+    },
+    "fields.password": function fieldsPassword(value) {
+      console.log("password", value);
+    }
   },
   methods: {
     submit: function submit() {
@@ -110,96 +113,42 @@ var render = function() {
       _vm._v(" "),
       _c("p", [_vm._v("商家管理的內容")]),
       _vm._v(" "),
-      _c("ValidationObserver", { ref: "form" }, [
-        _c(
-          "div",
-          [
-            _c("ValidationProvider", {
-              attrs: { name: "password", rules: "required" },
-              scopedSlots: _vm._u([
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var failed = ref.failed
-                    var errors = ref.errors
-                    return [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.password,
-                            expression: "password"
-                          }
-                        ],
-                        attrs: { name: "password" },
-                        domProps: { value: _vm.password },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.password = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      failed
-                        ? _c("span", [_vm._v(_vm._s(errors[0]))])
-                        : _vm._e()
-                    ]
-                  }
-                }
-              ])
-            })
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "div",
-          [
-            _c("ValidationProvider", {
-              attrs: { name: "account", rules: "required" },
-              scopedSlots: _vm._u([
-                {
-                  key: "default",
-                  fn: function(ref) {
-                    var failed = ref.failed
-                    var errors = ref.errors
-                    return [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.account,
-                            expression: "account"
-                          }
-                        ],
-                        domProps: { value: _vm.account },
-                        on: {
-                          input: function($event) {
-                            if ($event.target.composing) {
-                              return
-                            }
-                            _vm.account = $event.target.value
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      failed
-                        ? _c("span", [_vm._v(_vm._s(errors[0]))])
-                        : _vm._e()
-                    ]
-                  }
-                }
-              ])
-            })
-          ],
-          1
-        )
-      ]),
+      _c(
+        "ValidationObserver",
+        { ref: "form" },
+        [
+          _c("ValidInput", {
+            attrs: {
+              modal: _vm.fields.password,
+              fields: _vm.fields.password,
+              fieldName: "fields",
+              label: "用戶密碼",
+              rules: "required"
+            },
+            on: {
+              "update:fields": function($event) {
+                return _vm.$set(_vm.fields, "password", $event)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("ValidInput", {
+            attrs: {
+              modal: _vm.fields.username,
+              fields: _vm.fields.username,
+              fieldName: "fields",
+              label: "用戶姓名",
+              rules: "required"
+            },
+            on: {
+              "update:fields": function($event) {
+                return _vm.$set(_vm.fields, "username", $event)
+              }
+            }
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "a",

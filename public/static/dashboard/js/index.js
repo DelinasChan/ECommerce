@@ -43,7 +43,7 @@
 /******/
 /******/ 	// script path function
 /******/ 	function jsonpScriptSrc(chunkId) {
-/******/ 		return __webpack_require__.p + "" + ({"static/dashboard/chunk/EditProductForm":"static/dashboard/chunk/EditProductForm","static/dashboard/chunk/OrderList":"static/dashboard/chunk/OrderList","static/dashboard/chunk/components/ValidationForm":"static/dashboard/chunk/components/ValidationForm","static/dashboard/chunk/dashboard":"static/dashboard/chunk/dashboard","static/dashboard/chunk/product":"static/dashboard/chunk/product","vendors~static/dashboard/chunk/store":"vendors~static/dashboard/chunk/store","static/dashboard/chunk/store":"static/dashboard/chunk/store"}[chunkId]||chunkId) + ".js"
+/******/ 		return __webpack_require__.p + "" + ({"static/dashboard/chunk/EditProductForm":"static/dashboard/chunk/EditProductForm","static/dashboard/chunk/OrderList":"static/dashboard/chunk/OrderList","static/dashboard/chunk/components/ValidInput":"static/dashboard/chunk/components/ValidInput","static/dashboard/chunk/components/ValidationForm":"static/dashboard/chunk/components/ValidationForm","static/dashboard/chunk/dashboard":"static/dashboard/chunk/dashboard","static/dashboard/chunk/product":"static/dashboard/chunk/product","vendors~static/dashboard/chunk/store":"vendors~static/dashboard/chunk/store","static/dashboard/chunk/store":"static/dashboard/chunk/store"}[chunkId]||chunkId) + ".js"
 /******/ 	}
 /******/
 /******/ 	// The require function
@@ -1153,6 +1153,17 @@ module.exports = g;
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+
+/***/ "./resources/spa/node_modules/vee-validate/dist/locale/zh_TW.json":
+/*!************************************************************************!*\
+  !*** ./resources/spa/node_modules/vee-validate/dist/locale/zh_TW.json ***!
+  \************************************************************************/
+/*! exports provided: code, messages, default */
+/***/ (function(module) {
+
+module.exports = JSON.parse("{\"code\":\"zh_TW\",\"messages\":{\"alpha\":\"{_field_} 須以英文組成\",\"alpha_dash\":\"{_field_} 須以英數、斜線及底線組成\",\"alpha_num\":\"{_field_} 須以英數組成\",\"alpha_spaces\":\"{_field_} 須以英文及空格組成\",\"between\":\"{_field_} 須介於 {min} 至 {max}之間\",\"confirmed\":\" {_field_} 不一致\",\"digits\":\"{_field_} 須為 {length} 位數字\",\"dimensions\":\"{_field_} 圖片尺寸不正確。須為 {width} x {height} 像素\",\"email\":\"{_field_} 須為有效的電子信箱\",\"excluded\":\"{_field_} 的選項無效\",\"ext\":\"{_field_} 須為有效的檔案\",\"image\":\"{_field_} 須為圖片\",\"oneOf\":\"{_field_} 的選項無效\",\"integer\":\"{_field_} 須為整數\",\"length\":\"{_field_} 的長度須為 {length}\",\"max\":\"{_field_} 不能大於 {length} 個字元\",\"max_value\":\"{_field_} 不得大於 {max}\",\"mimes\":\"{_field_} 須為有效的檔案類型\",\"min\":\"{_field_} 不能小於 {length} 個字元\",\"min_value\":\"{_field_} 不得小於 {min}\",\"numeric\":\"{_field_} 須為數字\",\"regex\":\"{_field_} 的格式錯誤\",\"required\":\"{_field_} 為必填\",\"required_if\":\"{_field_} 為必填\",\"size\":\"{_field_} 的檔案須小於 {size}KB\",\"double\":\"{_field_}字段必須為有效的小數\"}}");
 
 /***/ }),
 
@@ -19346,6 +19357,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   ValidationForm: function ValidationForm() {
     return __webpack_require__.e(/*! import() | static/dashboard/chunk/components/ValidationForm */ "static/dashboard/chunk/components/ValidationForm").then(__webpack_require__.bind(null, /*! ./Form/ValidationForm */ "./resources/spa/src/components/Form/ValidationForm.vue"));
+  },
+  ValidInput: function ValidInput() {
+    return __webpack_require__.e(/*! import() | static/dashboard/chunk/components/ValidInput */ "static/dashboard/chunk/components/ValidInput").then(__webpack_require__.bind(null, /*! ./Form/ValidInput */ "./resources/spa/src/components/Form/ValidInput.vue"));
   }
 });
 
@@ -19368,6 +19382,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components */ "./resources/spa/src/components/index.js");
 /* harmony import */ var vee_validate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vee-validate */ "./resources/spa/node_modules/vee-validate/dist/vee-validate.esm.js");
 /* harmony import */ var vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vee-validate/dist/rules */ "./resources/spa/node_modules/vee-validate/dist/rules.js");
+/* harmony import */ var vee_validate_dist_locale_zh_TW__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! vee-validate/dist/locale/zh_TW */ "./resources/spa/node_modules/vee-validate/dist/locale/zh_TW.json");
+var vee_validate_dist_locale_zh_TW__WEBPACK_IMPORTED_MODULE_7___namespace = /*#__PURE__*/__webpack_require__.t(/*! vee-validate/dist/locale/zh_TW */ "./resources/spa/node_modules/vee-validate/dist/locale/zh_TW.json", 1);
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -19388,7 +19404,19 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__); //引用驗證規則
+ //設定規則語系
+
+vee_validate__WEBPACK_IMPORTED_MODULE_5__["localize"]({
+  zh_TW: vee_validate_dist_locale_zh_TW__WEBPACK_IMPORTED_MODULE_7__
+});
+vee_validate__WEBPACK_IMPORTED_MODULE_5__["localize"]('zh_TW');
+vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vee_validate__WEBPACK_IMPORTED_MODULE_5__, {
+  aria: true,
+  classNames: {
+    valid: 'is-valid',
+    invalid: 'is-invalid'
+  }
+}); //引用驗證規則
 
 Object.keys(vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_6__).forEach(function (rule) {
   Object(vee_validate__WEBPACK_IMPORTED_MODULE_5__["extend"])(rule, vee_validate_dist_rules__WEBPACK_IMPORTED_MODULE_6__[rule]);

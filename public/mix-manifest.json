@@ -3,12 +3,11 @@
     "/static/dashboard/css/index.css": "/static/dashboard/css/index.css",
     "/static/dashboard/chunk/EditProductForm.js": "/static/dashboard/chunk/EditProductForm.js",
     "/static/dashboard/chunk/OrderList.js": "/static/dashboard/chunk/OrderList.js",
-    "/static/dashboard/chunk/components/EditForm.js": "/static/dashboard/chunk/components/EditForm.js",
+    "/static/dashboard/chunk/components/ValidInput.js": "/static/dashboard/chunk/components/ValidInput.js",
+    "/static/dashboard/chunk/components/ValidationForm.js": "/static/dashboard/chunk/components/ValidationForm.js",
     "/static/dashboard/chunk/dashboard.js": "/static/dashboard/chunk/dashboard.js",
     "/static/dashboard/chunk/product.js": "/static/dashboard/chunk/product.js",
     "/static/dashboard/chunk/store.js": "/static/dashboard/chunk/store.js",
-    "/resources/views/dashboard/index.blade.php": "/resources/views/dashboard/index.blade.php",
-    "/vendors~static/dashboard/chunk/components/EditForm.js": "/vendors~static/dashboard/chunk/components/EditForm.js",
-    "/static/dashboard/chunk/components/ValidationForm.js": "/static/dashboard/chunk/components/ValidationForm.js",
-    "/vendors~static/dashboard/chunk/store.js": "/vendors~static/dashboard/chunk/store.js"
+    "/vendors~static/dashboard/chunk/store.js": "/vendors~static/dashboard/chunk/store.js",
+    "/resources/views/dashboard/index.blade.php": "/resources/views/dashboard/index.blade.php"
 }

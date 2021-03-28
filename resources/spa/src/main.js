@@ -6,9 +6,19 @@ import components from "./components";
 import * as VeeValidate from 'vee-validate';
 import { ValidationProvider, ValidationObserver , extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
+import zh_TW from 'vee-validate/dist/locale/zh_TW'
 
+//設定規則語系
+VeeValidate.localize({zh_TW});
+VeeValidate.localize('zh_TW');
 
-Vue.use(VeeValidate);
+Vue.use(VeeValidate,{
+  aria: true,
+  classNames: {
+    valid: 'is-valid',
+    invalid: 'is-invalid'
+  }
+});
 
 //引用驗證規則
 Object.keys(rules).forEach((rule) => {
