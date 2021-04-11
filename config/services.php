@@ -2,20 +2,20 @@
 
 return [
 
-    /** 
+    /**
      * -----------------------------------------------------------------------
-     * Laravel Social Plugin Services 
+     * Laravel Social Plugin Services
      * -----------------------------------------------------------------------
-     * 
+     *
      * 第三方 社交套件 設定
-     * 
-    */
+     *
+     */
 
-    //臉書 api 
+    //臉書 api
     'facebook' => [
         'client_id' => env('FB_CLIENT_ID'),
         'client_secret' => env('FB_CLIENT_SECRET'),
-        'redirect' => env('FB_REDIRECT'),
+        'redirect' => env('SOCIAL_REDIRECT'),
     ],
 
     /*
@@ -28,7 +28,7 @@ return [
     | location for this type of information, allowing packages to have
     | a conventional file to locate the various service credentials.
     |
-    */
+     */
 
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),

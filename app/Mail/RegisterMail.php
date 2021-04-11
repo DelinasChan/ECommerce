@@ -7,20 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class RegisterMail extends Mailable
+class RegisterMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
-    protected  $data ;
+    protected $data;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct( $data )
+    public function __construct($data)
     {
         //
-        $this->data = $data ;
+        $this->data = $data;
 
     }
 
@@ -30,10 +30,8 @@ class RegisterMail extends Mailable
      * @return $this
      */
     public function build()
-    {   
-        $sender = config("mail.sender") ;
-        return $this->from( $sender["mail"] , $sender["name"] )
-                    ->view('emails.register')
-                    ->with( $this->data );
+    {
+        return $this->view('emails.register')
+            ->with($this->data);
     }
 }
