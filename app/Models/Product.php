@@ -26,6 +26,17 @@ class Product extends Model implements HasMedia
         'image',
     ];
 
+    public function member()
+    {
+        return $this->belongsTo(Member::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+
+    }
+
     public function registerMediaCollections(): void
     {
         $this
@@ -33,14 +44,18 @@ class Product extends Model implements HasMedia
             ->useDisk('media');
     }
 
-    public function getPath(): string
-    {
-        dd($this->media->disk);
-        return $this->media->disk === 'public' ? $this->getStoragePath() . '/' . $this->getPathRelativeToRoot() : $this->getPathRelativeToRoot();
-    }
-
     public function getImageAttribute()
     {
-        return $this->getFirstMedia(self::MEDIA_COLLECT)->getUrl();
+        $media = $this->getFirstMedia(self::MEDIA_COLLECT);
+        return $media ? $media->getUrl() : '';
+    }
+
+    //移除商品圖片
+    public function removeImages()
+    {
+        $mediaItem = $this->getMedia(Product::MEDIA_COLLECT);
+        foreach ($mediaItem as $media) {
+            $media->delete();
+        };
     }
 }
