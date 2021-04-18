@@ -11,7 +11,7 @@ return [
     | the validator class. Some of these rules have multiple versions such
     | as the size rules. Feel free to tweak each of these messages here.
     |
-    */
+     */
 
     'accepted' => 'The :attribute must be accepted.',
     'active_url' => 'The :attribute is not a valid URL.',
@@ -79,7 +79,7 @@ return [
     'max' => [
         'numeric' => 'The :attribute may not be greater than :max.',
         'file' => 'The :attribute may not be greater than :max kilobytes.',
-        'string' => 'The :attribute may not be greater than :max characters.',
+        'string' => ':attribute 最多 :max 個字元',
         'array' => 'The :attribute may not have more than :max items.',
     ],
     'mimes' => 'The :attribute must be a file of type: :values.',
@@ -87,7 +87,7 @@ return [
     'min' => [
         'numeric' => 'The :attribute must be at least :min.',
         'file' => 'The :attribute must be at least :min kilobytes.',
-        'string' => 'The :attribute must be at least :min characters.',
+        'string' => ':attribute 至少 :min 個字',
         'array' => 'The :attribute must have at least :min items.',
     ],
     'not_in' => 'The selected :attribute is invalid.',
@@ -127,25 +127,25 @@ return [
     | convention "attribute.rule" to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
     |
-    */
+     */
 
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
-        'account'    => [
-            'regex'  => '帳號格式為 大小寫英文+數字 至少六個字',
+        'account' => [
+            'regex' => '帳號格式為 大小寫英文+數字 至少六個字',
         ],
         'password' => [
             'regex' => ' 密碼格式為 大小寫英文+數字 至少六個字',
         ],
         "username" => [
-            "regex" => "姓名只能輸入中英文" ,
-            "min"   => "姓名至少三個字" 
+            "regex" => "姓名只能輸入中英文",
+            "min" => "姓名至少三個字",
         ],
         "validCode" => [
-            "captcha" => "驗證碼錯誤"
-        ]
+            "captcha" => "驗證碼錯誤",
+        ],
     ],
 
     /*
@@ -157,11 +157,14 @@ return [
     | with something more reader friendly such as "E-Mail Address" instead
     | of "email". This simply helps us make our message more expressive.
     |
-    */
+     */
 
     'attributes' => [
-        "account"   => "帳號" , "email" => "信箱" , "password"  => "密碼" ,
-        "username" => "用戶名稱" , "validCode" => "驗證碼"
+        "account" => "帳號",
+        "email" => "信箱",
+        "password" => "密碼",
+        "username" => "用戶名稱",
+        "validCode" => "驗證碼",
     ],
 
 ];

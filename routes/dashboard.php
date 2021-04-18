@@ -1,13 +1,11 @@
 <?php
 
-Route::group(['prefix' => 'dashboard'], function () {
-    Route::get('/{path?}', function () {
-        return view('dashboard.index');
-    })->where('path', '^((?!api).)*$');;
+Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'Login']], function () {
+    Route::get('/{path?}', 'DashboardCOntroller@index')
+        ->where('path', '^((?!api).)*$')->name('dashboard.index');
 
     //Dashboard Api...
     Route::prefix('/api/v1')->name('dashboard.api.')->group(function () {
-
         Route::prefix('product')->group(function () {
             //取得商品
             Route::get('/{product}', 'ProductController@show')

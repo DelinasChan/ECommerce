@@ -4,8 +4,8 @@ return [
 
     // "root" => env("" ,  __DIR__ );
 
-    /** JWT Key */
-    "jwt_key" => env("JWT_SECRET"),
+    /** JWT Secret */
+    "jwt_secret" => env("JWT_SECRET"),
 
     /** Salt Key  */
     "salt" => env("APP_SALT"),
