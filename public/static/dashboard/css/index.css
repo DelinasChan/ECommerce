@@ -197,3 +197,21 @@ li {
   }
 }
 
+/** 媒體庫 */
+
+.media div {
+  width: 100%;
+}
+
+.media > div:nth-child(1) {
+  flex-basis: 80px;
+}
+
+.media > div:nth-child(2) {
+  flex-grow: 8;
+}
+
+.media .draging {
+  box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+

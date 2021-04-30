@@ -1,0 +1,16 @@
+.media {
+    div {
+        width: 100%;
+    }
+    & > div:nth-child(1) {
+        flex-basis: 80px;
+    }
+
+    & > div:nth-child(2) {
+        flex-grow: 8;
+    }
+
+    .draging {
+        box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+    }
+}

@@ -12,7 +12,8 @@
     "vee-validate": "^3.4.5",
     "vue": "^2.6.11",
     "vue-router": "^3.5.1",
-    "yup": "^0.32.9"
+    "yup": "^0.32.9",
+    "ziggy-js": "^1.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

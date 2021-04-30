@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\Access\Authorizable;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-
-class Member extends Model implements AuthenticatableContract
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\PathGenerator;
+class Member extends Model implements AuthenticatableContract, HasMedia
 {
     use HasFactory;
     use Authenticatable;
+    use InteractsWithMedia;
+
     protected $table = 'member';
     protected $fillable = [
         'id', 'username', 'account', 'email', 'provider_name',

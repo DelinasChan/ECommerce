@@ -20,6 +20,7 @@
         "vue-template-compiler": "^2.6.12"
     },
     "dependencies": {
+        "laravel-ziggy-generator-webpack": "^0.1.0",
         "vue": "^2.6.12",
         "vuex": "^3.5.1"
     }

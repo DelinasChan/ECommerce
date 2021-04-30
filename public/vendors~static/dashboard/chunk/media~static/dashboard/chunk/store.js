@@ -1,4 +1,4 @@
-(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["vendors~static/dashboard/chunk/store"],{
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([["vendors~static/dashboard/chunk/media~static/dashboard/chunk/store"],{
 
 /***/ "./resources/spa/node_modules/@babel/runtime/regenerator/index.js":
 /*!************************************************************************!*\

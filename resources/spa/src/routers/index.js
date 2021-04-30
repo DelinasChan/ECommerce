@@ -60,6 +60,16 @@ export default new VueRouter({
             },
             component:()=>  import(/* webpackChunkName: 'static/dashboard/chunk/dashboard' */ '@/views/dashboard')
         },
+        {
+            path:'/dashboard/media',
+            name:'media',
+            label:'媒體庫',
+            icon:'icon i-dashboard',
+            meta:{
+                title:'媒體庫'
+            },
+            component:() => import(/* webpackChunkName: 'static/dashboard/chunk/media' */ '@/views/media')
+        },
         ...routesSprea(StoreRouter),
         ...routesSprea(ProductRouter),
         ...routesSprea(OrderRouter),

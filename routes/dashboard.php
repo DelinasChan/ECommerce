@@ -6,6 +6,13 @@ Route::group(['prefix' => 'dashboard', 'middleware' => ['web', 'Login']], functi
 
     //Dashboard Api...
     Route::prefix('/api/v1')->name('dashboard.api.')->group(function () {
+
+        Route::prefix('media')->name('media.')->group(function () {
+            Route::get('index', 'MediaController@index')->name('index');
+            Route::post('create', 'MediaController@create')->name('create');
+            Route::delete('destroy', 'MediaController@destroy')->name('destroy');
+        });
+
         Route::prefix('product')->group(function () {
             //取得商品
             Route::get('/{product}', 'ProductController@show')

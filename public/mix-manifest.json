@@ -6,8 +6,8 @@
     "/static/dashboard/chunk/components/ValidInput.js": "/static/dashboard/chunk/components/ValidInput.js",
     "/static/dashboard/chunk/components/ValidationForm.js": "/static/dashboard/chunk/components/ValidationForm.js",
     "/static/dashboard/chunk/dashboard.js": "/static/dashboard/chunk/dashboard.js",
+    "/static/dashboard/chunk/media.js": "/static/dashboard/chunk/media.js",
     "/static/dashboard/chunk/product.js": "/static/dashboard/chunk/product.js",
     "/static/dashboard/chunk/store.js": "/static/dashboard/chunk/store.js",
-    "/vendors~static/dashboard/chunk/store.js": "/vendors~static/dashboard/chunk/store.js",
     "/resources/views/dashboard/index.blade.php": "/resources/views/dashboard/index.blade.php"
 }

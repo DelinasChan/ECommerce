@@ -7,6 +7,10 @@ import * as VeeValidate from 'vee-validate';
 import { ValidationProvider, ValidationObserver , extend } from 'vee-validate';
 import * as rules from 'vee-validate/dist/rules';
 import zh_TW from 'vee-validate/dist/locale/zh_TW'
+import route from 'ziggy-js';
+import { Ziggy } from './ziggy';
+import axios from 'axios';
+import ImageItem from "./components/ImageItem";
 
 //設定規則語系
 VeeValidate.localize({zh_TW});
@@ -20,6 +24,30 @@ Vue.use(VeeValidate,{
   }
 });
 
+Vue.mixin({
+  methods:{
+    route:(name, params, absolute) => route(name, params, absolute, Ziggy),
+    fetch:(url,options = {}) => {
+
+      if(!options.method)
+      {
+        options.method = 'get';
+      }
+
+      if(!options.headers)
+      {
+        options.headers = {};
+      }
+      options.headers['Content-Type'] = "multipart/form-data"
+
+      return axios({
+        url,
+        ...options
+      });
+      
+    }
+  }
+})
 //引用驗證規則
 Object.keys(rules).forEach((rule) => {
   extend(rule, rules[rule]);
@@ -35,6 +63,7 @@ Vue.prototype.$baseSetting = {
 
 Vue.component('ValidationProvider', ValidationProvider);
 Vue.component('ValidationObserver',ValidationObserver);
+Vue.component('ImageItem',ImageItem);
 
 let resource = [
   {
@@ -44,7 +73,7 @@ let resource = [
 ];
 
 common.loadResource(resource);
-
+console.log(Ziggy.routes)
 router.beforeEach((to, from, next) => {
   next();
 });
