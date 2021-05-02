@@ -16,7 +16,12 @@
       @dragenter="isDraging = true"
       @dragleave="isDraging = false"
     >
-      <ImageItem v-for="(item, index) in data" :key="index" :image="item" />
+      <ImageItem
+        v-for="(item, index) in data"
+        :key="item.id"
+        :image="item"
+        @refreshData="refreshData(index)"
+      />
     </div>
 
     <div v-else>
@@ -38,12 +43,18 @@ export default {
     this.getData();
   },
   methods: {
+    /** 刪除後更新資料 */
+    refreshData(index) {
+      this.data.splice(index, 1);
+    },
+
     /** 請求資料 */
     async getData() {
       let url = this.route("dashboard.api.media.index");
       let { data = [] } = await this.fetch(url);
       this.data = data;
     },
+
     /** 拖曳結束事件 */
     onDrop(event) {
       this.isDraging = false;

@@ -199,10 +199,6 @@ li {
 
 /** 媒體庫 */
 
-.media div {
-  width: 100%;
-}
-
 .media > div:nth-child(1) {
   flex-basis: 80px;
 }
@@ -213,5 +209,40 @@ li {
 
 .media .draging {
   box-shadow: rgba(3, 102, 214, 0.3) 0px 0px 0px 3px;
+}
+
+.media .bulk {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  max-height: 85vh;
+  overflow: auto;
+  overflow-x: none;
+  padding: 10px 0px;
+}
+
+.media .bulk .media-item {
+  position: relative;
+  margin: 10px;
+  flex-basis: calc(100% / 5.6);
+}
+
+.media .bulk .media-item:hover .delete-btn {
+  display: inline;
+}
+
+.media .bulk .media-item img {
+  width: 100%;
+  height: 250px;
+}
+
+.media .bulk .media-item .delete-btn {
+  position: absolute;
+  right: 10px;
+  font-size: 30px;
+  font-weight: 1000;
+  color: #fff;
+  cursor: pointer;
+  display: none;
 }
 

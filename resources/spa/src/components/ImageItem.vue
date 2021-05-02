@@ -3,9 +3,9 @@
     <div v-if="isUplading" class="process">
       <a>{{ process }}</a>
     </div>
-    <div v-else class="container">
+    <div>
       <img width="80" height="100" :src="media.url" />
-      <a @click="destroy(media.id)">x</a>
+      <a class="delete-btn" @click="destroy(media.id)">x</a>
     </div>
   </div>
 </template>
@@ -31,17 +31,17 @@ export default {
     /** 上傳圖片 */
     async upload() {
       this.isUplading = true;
-      let form = new FormData();
       let url = this.route("dashboard.api.media.create");
-      form.append("images[0]", this.image);
       let config = {
         method: "post",
-        data: form,
+        data: {
+          images: [this.image],
+        },
         onUploadProgress: (event) => {
           this.process = (((event.loaded / event.total) * 100) | 0) + "%";
         },
       };
-      let { data = {} } = await this.fetch(url, config);
+      let { data = {} } = await this.fetch(url, config, true);
       this.media = data.image;
       this.isUplading = false;
     },
@@ -49,8 +49,8 @@ export default {
     /** 刪除圖片 */
     async destroy(id) {
       let url = this.route("dashboard.api.media.destroy");
-      let ids = [id];
-      await this.fetch(url, { data: { ids }, method: "post" });
+      this.$emit("refreshData");
+      await this.fetch(url, { data: { id }, method: "delete" });
     },
   },
 };

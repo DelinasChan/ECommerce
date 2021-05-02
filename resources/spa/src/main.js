@@ -11,6 +11,7 @@ import route from 'ziggy-js';
 import { Ziggy } from './ziggy';
 import axios from 'axios';
 import ImageItem from "./components/ImageItem";
+import { isArray } from 'lodash';
 
 //設定規則語系
 VeeValidate.localize({zh_TW});
@@ -27,7 +28,10 @@ Vue.use(VeeValidate,{
 Vue.mixin({
   methods:{
     route:(name, params, absolute) => route(name, params, absolute, Ziggy),
-    fetch:(url,options = {}) => {
+    /**  
+     * @param { string } type REST|FORM
+    */
+    fetch:(url,options = {}, useForm = false) => {
 
       if(!options.method)
       {
@@ -38,8 +42,42 @@ Vue.mixin({
       {
         options.headers = {};
       }
-      options.headers['Content-Type'] = "multipart/form-data"
+      
+      //處理表單資料
+      if(useForm)
+      {
+        let form = new FormData();
+        let { data } = options ;
+        options.headers['Content-Type'] = "multipart/form-data" ;
+        form.append('method',options.method) ;
 
+        if( !(data instanceof Object) || Array.isArray(data))
+        {
+          throw new Error('options.data with Form muse be Object');
+        }
+
+        for(let [key , value] of Object.entries(options.data))
+        {
+          if(isArray(value))
+          {
+            value.forEach((itemVal,index)=>{
+              form.append(`${key}[${index}]`,itemVal);
+            });
+          }else{
+            if(value instanceof File || typeof value !== 'object'){
+              form.append(`${key}`,value);
+            }else{
+              for(let [subKey,value] in Object.entries(options.data))
+              {
+                form.append(`${key}[${subKey}]`,value);
+              };
+            }
+          }
+        }
+
+        options.data = form ;
+      }
+      
       return axios({
         url,
         ...options

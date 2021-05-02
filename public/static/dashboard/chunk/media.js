@@ -56,6 +56,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "Media",
   data: function data() {
@@ -68,6 +73,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     this.getData();
   },
   methods: {
+    /** 刪除後更新資料 */
+    refreshData: function refreshData(index) {
+      this.data.splice(index, 1);
+    },
+
     /** 請求資料 */
     getData: function getData() {
       var _this = this;
@@ -168,7 +178,15 @@ var render = function() {
             }
           },
           _vm._l(_vm.data, function(item, index) {
-            return _c("ImageItem", { key: index, attrs: { image: item } })
+            return _c("ImageItem", {
+              key: item.id,
+              attrs: { image: item },
+              on: {
+                refreshData: function($event) {
+                  return _vm.refreshData(index)
+                }
+              }
+            })
           }),
           1
         )

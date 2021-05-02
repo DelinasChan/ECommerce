@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Member;
-use Spatie\MediaLibrary\Media;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class MediaController extends Controller
 {
@@ -25,6 +25,7 @@ class MediaController extends Controller
     {
         $images = $request->file('images');
         $item = [];
+
         foreach ($images as $image) {
             $newImage = $request->member->addMedia($image)
                 ->toMediaCollection('media');
@@ -44,7 +45,16 @@ class MediaController extends Controller
 
     public function destroy(Request $request)
     {
-        dd(Media);
+        $payload = $request->only('ids', 'id');
+        if (isset($payload['id'])) {
+            $request->member->Media()->where('id', $payload['id'])->delete();
+        } else {
+            $request->member->Media()->whereIn('id', $payload['ids'])->delete();
+        }
+        return [
+            'status' => true,
+            'message' => '更新成功',
+        ];
     }
 
 }
